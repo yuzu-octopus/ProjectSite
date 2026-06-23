@@ -206,7 +206,7 @@
     }
 
     .hero h1 {
-      font-size: 3.5rem;
+      font-size: 3rem;
       color: var(--purple);
       margin-bottom: 12px;
     }
@@ -249,7 +249,7 @@
     .btn-primary:hover {
       background: var(--pink);
       border-color: var(--pink);
-      color: var(--bg);
+      color: var(--fg);
     }
 
     .btn-outline {
@@ -458,7 +458,6 @@
       .mobile-toggle { display: block; }
       .sidebar.open { display: flex; width: 240px; }
       .sidebar-overlay.open { display: block; }
-      .main.shifted { margin-left: 240px; }
     }
   </style>
 </head>
@@ -597,14 +596,12 @@ function toggleSidebar() {
   var main = document.querySelector('.main');
   var overlay = document.getElementById('sidebar-overlay');
   var open = sidebar.classList.toggle('open');
-  main.classList.toggle('shifted');
   overlay.classList.toggle('open');
   btn.setAttribute('aria-expanded', open);
 }
 
 function closeSidebar() {
   document.querySelector('.sidebar').classList.remove('open');
-  document.querySelector('.main').classList.remove('shifted');
   document.getElementById('sidebar-overlay').classList.remove('open');
   document.getElementById('mobile-toggle').setAttribute('aria-expanded', 'false');
 }
