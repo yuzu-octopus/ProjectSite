@@ -6,8 +6,8 @@ description = "Static site generator for GitHub project pages"
 github_url = "https://github.com/yuzu-octopus/ProjectSite"
 page_url = "https://yuzu-octopus.github.io/ProjectSite/"
 quickstart_url = "#usage"
-logo_svg = """<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="14" fill="#44475a"/><rect x="14" y="16" width="36" height="32" rx="4" fill="none" stroke="#50fa7b" stroke-width="2.5"/><circle cx="48" cy="16" r="9" fill="#bd93f9"/><path d="M45 16h6M48 13v6" stroke="#282a36" stroke-width="2" stroke-linecap="round"/></svg>"""
-favicon_data = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2344475a'/><circle cx='16' cy='16' r='9' fill='%23bd93f9'/><path d='M13 16h6M16 13v6' stroke='%23282a36' stroke-width='2' stroke-linecap='round'/></svg>"""
+logo_svg = """<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="14" fill="#44475a"/><rect x="14" y="16" width="36" height="32" rx="4" fill="none" stroke="#50fa7b" stroke-width="2.5"/><path d="M24 26h16" stroke="#bd93f9" stroke-width="2" stroke-linecap="round"/><path d="M24 32h12" stroke="#6272a4" stroke-width="2" stroke-linecap="round"/><path d="M24 38h8" stroke="#6272a4" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="16" r="9" fill="#bd93f9"/><path d="M45 16h6M48 13v6" stroke="#282a36" stroke-width="2" stroke-linecap="round"/></svg>"""
+favicon_data = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='#44475a'/><circle cx='16' cy='16' r='9' fill='#bd93f9'/><path d='M13 16h6M16 13v6' stroke='#282a36' stroke-width='2' stroke-linecap='round'/></svg>"""
 
 [brand]
 tagline = "TOML · Jinja2 · Python"
