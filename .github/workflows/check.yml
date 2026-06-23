@@ -1,0 +1,59 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install jinja2 ruff
+      - name: Lint
+        run: ruff check genpage.py
+      - name: Verify template renders
+        run: python -c "
+import tomllib, tempfile, pathlib
+from jinja2 import Environment, FileSystemLoader
+
+# Minimal test TOML
+test = '''
+[project]
+name = 'Test'
+tagline = 'test'
+subtitle = 'test'
+description = 'test'
+github_url = 'https://example.com'
+page_url = 'https://example.com'
+logo_svg = '<svg/>'
+favicon_data = '<svg/>'
+
+[brand]
+tagline = 'test'
+
+[[sections]]
+id = 'features'
+type = 'features'
+title = 'Features'
+icon = 'grid'
+
+[[sections.items]]
+title = 'A'
+body = 'B'
+'''
+data = tomllib.loads(test)
+env = Environment(loader=FileSystemLoader('.'), autoescape=False)
+html = env.get_template('template.html.j2').render(**data)
+assert 'Test' in html
+assert 'A' in html
+print('Template renders correctly')
+"

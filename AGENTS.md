@@ -1,10 +1,10 @@
 # Commands
 
 ## Run generator (single project)
-uv run python genpage.py --input projects/tradingbot.toml
+uv run python genpage.py --input path/to/project.toml --output docs/index.html
 
-## Run generator (batch mode — all projects)
-uv run python genpage.py --batch
+## Run generator (batch mode — all .toml files in a directory)
+uv run python genpage.py --input projects/ --output docs/ --batch
 
 ## Lint
 ruff check genpage.py

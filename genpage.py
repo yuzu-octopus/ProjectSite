@@ -9,8 +9,6 @@ from jinja2 import Environment, FileSystemLoader
 
 HERE = Path(__file__).parent
 TEMPLATE = "template.html.j2"
-DEFAULT_INPUT = HERE / "projects"
-DEFAULT_OUTPUT = HERE / "docs"
 
 
 def load_toml(path: Path) -> dict:
@@ -51,13 +49,13 @@ def main() -> None:
     parser.add_argument(
         "--input",
         type=str,
-        default=None,
+        required=True,
         help="TOML file (single mode) or directory (batch mode)",
     )
     parser.add_argument(
         "--output",
         type=str,
-        default=None,
+        required=True,
         help="Output HTML path (single mode) or directory (batch mode)",
     )
     parser.add_argument(
@@ -68,13 +66,9 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.batch:
-        input_dir = Path(args.input) if args.input else DEFAULT_INPUT
-        output_dir = Path(args.output) if args.output else DEFAULT_OUTPUT
-        batch(input_dir, output_dir)
+        batch(Path(args.input), Path(args.output))
     else:
-        input_path = Path(args.input) if args.input else DEFAULT_INPUT / "tradingbot.toml"
-        output_path = Path(args.output) if args.output else DEFAULT_OUTPUT / "index.html"
-        generate_one(input_path, output_path)
+        generate_one(Path(args.input), Path(args.output))
 
 
 if __name__ == "__main__":
