@@ -500,7 +500,7 @@
 
       {% if section.type == "features" %}
       <div class="grid">
-        {% for item in section.items %}
+        {% for item in section["items"] %}
         <div class="card">
           <h3>{{ item.title }}</h3>
           <p>{{ item.body }}</p>
@@ -522,14 +522,14 @@
 
       {% elif section.type == "steps" %}
       <ul class="steps">
-        {% for item in section.items %}
+        {% for item in section["items"] %}
         <li><strong>{{ item.title }}</strong> &mdash; {{ item.body }}</li>
         {% endfor %}
       </ul>
 
       {% elif section.type == "terms" %}
       <ul class="terms">
-        {% for item in section.items %}
+        {% for item in section["items"] %}
         <li><span class="term">{{ item.term }}</span> &mdash; {{ item.definition }}</li>
         {% endfor %}
       </ul>
@@ -539,7 +539,7 @@
 
       {% elif section.type == "stack" %}
       <div class="stack">
-        {% for item in section.items %}
+        {% for item in section["items"] %}
         <span class="badge"><strong>{{ item.name }}</strong> &mdash; {{ item.description }}</span>
         {% endfor %}
       </div>
