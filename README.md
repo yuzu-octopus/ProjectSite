@@ -169,6 +169,9 @@ Each project repo runs the generator in CI and commits the result to its
 ```yaml
 name: Deploy project page
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main]
@@ -188,6 +191,7 @@ jobs:
         with:
           repository: yuzu-octopus/ProjectSite
           path: generator
+          persist-credentials: false
       - name: Generate page
         run: |
           pip install jinja2
