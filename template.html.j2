@@ -43,6 +43,15 @@
 
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scrollbar-width: thin; scrollbar-color: var(--panel) var(--bg); }
 
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -53,6 +62,12 @@
 
     a { color: var(--cyan); text-decoration: none; }
     a:hover { color: var(--pink); }
+    a:focus-visible,
+    .btn:focus-visible,
+    .mobile-toggle:focus-visible {
+      outline: 2px solid var(--pink);
+      outline-offset: 2px;
+    }
 
     h1, h2, h3, h4 { font-weight: 700; }
 
@@ -64,6 +79,7 @@
       border-right: 1px solid var(--muted);
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
       z-index: 1200;
     }
 
@@ -230,7 +246,7 @@
     .btn-primary:hover {
       background: var(--pink);
       border-color: var(--pink);
-      color: var(--fg);
+      color: var(--bg);
     }
 
     .btn-outline {
@@ -254,17 +270,19 @@
       border: 1px solid var(--muted);
       border-radius: 8px;
       padding: 20px;
-      transition: border-color 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .card:hover {
       border-color: var(--purple);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
     .card h3 {
       color: var(--purple);
-      font-size: 0.95rem;
-      margin-bottom: 8px;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
     }
 
     .card p {
@@ -296,7 +314,7 @@
 
     tr:last-child td { border-bottom: none; }
 
-    tr:hover td { background: var(--bg); }
+    tr:hover td { background: rgba(255, 255, 255, 0.05); }
 
     .status-comfortable { color: var(--green); }
     .status-tight { color: var(--orange); }
@@ -413,7 +431,7 @@
       background: var(--panel);
       border: 1px solid var(--muted);
       color: var(--fg);
-      padding: 8px 10px;
+      padding: 12px 14px;
       border-radius: 50%;
       cursor: pointer;
       transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -423,11 +441,20 @@
       background: var(--muted);
     }
 
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1100;
+    }
+
     @media (max-width: 900px) {
       .sidebar { display: none; }
       .main { margin-left: 0; }
       .mobile-toggle { display: block; }
       .sidebar.open { display: flex; width: 240px; }
+      .sidebar-overlay.open { display: block; }
       .main.shifted { margin-left: 240px; }
     }
   </style>
@@ -454,8 +481,9 @@
 {% endif %}
 {% endmacro %}
 
-<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open'); document.querySelector('.main').classList.toggle('shifted');" aria-label="Toggle mobile menu">&#9776;</button>
-<a class="skip-link" href="#hero">Skip to content</a>
+<button class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle mobile menu" aria-controls="sidebar" aria-expanded="false">&#9776;</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
 <aside class="sidebar">
   <div class="sidebar-brand">
@@ -464,12 +492,14 @@
     <div class="tagline">{{ brand.tagline }}</div>
   </div>
   <hr class="sidebar-divider">
-  <ul class="sidebar-nav">
-    <li><a href="#hero"><span class="icon">{{ icon("home") }}</span> Home</a></li>
-    {% for section in sections %}
-    <li><a href="#{{ section.id }}"><span class="icon">{{ icon(section.icon) }}</span> {{ section.title }}</a></li>
-    {% endfor %}
-  </ul>
+  <nav aria-label="Main navigation">
+    <ul class="sidebar-nav">
+      <li><a href="#hero"><span class="icon">{{ icon("home") }}</span> Home</a></li>
+      {% for section in sections %}
+      <li><a href="#{{ section.id }}"><span class="icon">{{ icon(section.icon) }}</span> {{ section.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
   <hr class="sidebar-divider">
   <div class="sidebar-footer">
     <div>&copy; 2026 yuzu-octopus</div>
@@ -478,7 +508,7 @@
   </div>
 </aside>
 
-<main class="main">
+<main class="main" id="main-content">
 
   <section id="hero" class="hero">
     <div class="container">
@@ -510,6 +540,7 @@
       </div>
 
       {% elif section.type == "table" %}
+      <div style="overflow-x: auto;">
       <table>
         <thead>
           <tr>{% for header in section.headers %}<th>{{ header }}</th>{% endfor %}</tr>
@@ -520,6 +551,7 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
 
       {% elif section.type == "steps" %}
       <ul class="steps">
@@ -555,5 +587,30 @@
 
 </main>
 
+<script>
+function toggleSidebar() {
+  var btn = document.getElementById('mobile-toggle');
+  var sidebar = document.querySelector('.sidebar');
+  var main = document.querySelector('.main');
+  var overlay = document.getElementById('sidebar-overlay');
+  var open = sidebar.classList.toggle('open');
+  main.classList.toggle('shifted');
+  overlay.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.querySelector('.main').classList.remove('shifted');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+  document.getElementById('mobile-toggle').setAttribute('aria-expanded', 'false');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.querySelector('.sidebar.open')) {
+    closeSidebar();
+  }
+});
+</script>
 </body>
 </html>
