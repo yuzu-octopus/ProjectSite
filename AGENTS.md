@@ -7,7 +7,7 @@ uv run python genpage.py --input projects/tradingbot.toml
 uv run python genpage.py --batch
 
 ## Lint
-ruff check genpage.py template.html.j2
+ruff check genpage.py
 
 ## Type check
 pyright genpage.py

@@ -7,7 +7,6 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-
 HERE = Path(__file__).parent
 TEMPLATE = "template.html.j2"
 DEFAULT_INPUT = HERE / "projects"
@@ -22,7 +21,7 @@ def load_toml(path: Path) -> dict:
 def render(template_name: str, data: dict) -> str:
     env = Environment(
         loader=FileSystemLoader(HERE),
-        autoescape=False,
+        autoescape=False,  # noqa: S701 — trusted TOML input, static site output
     )
     template = env.get_template(template_name)
     return template.render(**data)
