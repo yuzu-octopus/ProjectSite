@@ -1,0 +1,34 @@
+name: Deploy project pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "projects/**"
+      - "template.html.j2"
+      - "genpage.py"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install jinja2
+      - name: Generate project pages
+        run: python genpage.py --batch
+      - name: Commit generated pages
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "ci: regenerate project pages [skip ci]"
+            git push
+          fi
