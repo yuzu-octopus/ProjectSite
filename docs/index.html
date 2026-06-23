@@ -3,23 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ project.name }} | {{ project.tagline }}</title>
-  <meta name="description" content="{{ project.description }}">
+  <title>ProjectSite | Static site generator for GitHub Pages</title>
+  <meta name="description" content="Static site generator for GitHub project pages">
   <meta name="theme-color" content="#282a36">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="{{ project.name }} | {{ project.tagline }}">
-  <meta property="og:description" content="{{ project.description }}">
-  <meta property="og:url" content="{{ project.page_url }}">
-  {% if project.og_image %}
-  <meta property="og:image" content="{{ project.page_url }}{{ project.og_image }}">
-  {% endif %}
+  <meta property="og:title" content="ProjectSite | Static site generator for GitHub Pages">
+  <meta property="og:description" content="Static site generator for GitHub project pages">
+  <meta property="og:url" content="https://yuzu-octopus.github.io/ProjectSite/">
+  
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ project.name }} | {{ project.tagline }}">
-  <meta name="twitter:description" content="{{ project.description }}">
-  {% if project.og_image %}
-  <meta name="twitter:image" content="{{ project.page_url }}{{ project.og_image }}">
-  {% endif %}
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{{ project.favicon_data | urlencode }}">
+  <meta name="twitter:title" content="ProjectSite | Static site generator for GitHub Pages">
+  <meta name="twitter:description" content="Static site generator for GitHub project pages">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2710%27%20fill%3D%27%2523282a36%27/%3E%3Crect%20x%3D%2714%27%20y%3D%2712%27%20width%3D%2736%27%20height%3D%2740%27%20rx%3D%274%27%20fill%3D%27%252344475a%27%20stroke%3D%27%2523bd93f9%27%20stroke-width%3D%272%27/%3E%3Cpath%20d%3D%27M22%2024h20M22%2030h20M22%2036h14%27%20stroke%3D%27%252350fa7b%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -434,41 +430,43 @@
 </head>
 <body>
 
-{% macro icon(name) %}
-{% if name == "home" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/></svg>
-{% elif name == "grid" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3,3H11V11H3V3M3,13H11V21H3V13M13,3H21V11H13V3M13,13H21V21H13V13Z"/></svg>
-{% elif name == "info" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
-{% elif name == "chip" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17,7A2,2 0 0,1 19,9V17A2,2 0 0,1 17,19H7A2,2 0 0,1 5,17V9A2,2 0 0,1 7,7H17M7,9V17H17V9H7M12,2A2,2 0 0,1 14,4V6H15V4A3,3 0 0,0 12,1A3,3 0 0,0 9,4V6H10V4A2,2 0 0,1 12,2Z"/></svg>
-{% elif name == "layers" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12,16L19.36,10.27L21,9L12,3L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,20L21,14.07L19.37,12.8L12,18.54Z"/></svg>
-{% elif name == "document" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10,19L12,17L14,19L15,18L13,16L15,14L14,13L12,15L10,13L9,14L11,16L9,18L10,19Z"/></svg>
-{% elif name == "play" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg>
-{% elif name == "gear" %}
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"/></svg>
-{% endif %}
-{% endmacro %}
+
 
 <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open'); document.querySelector('.main').classList.toggle('shifted');" aria-label="Toggle mobile menu">&#9776;</button>
 <a class="skip-link" href="#hero">Skip to content</a>
 
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <div class="logo">{{ project.logo_svg }}</div>
-    <div class="name">{{ project.name }}</div>
-    <div class="tagline">{{ brand.tagline }}</div>
+    <div class="logo"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="12" fill="#44475a"/><rect x="14" y="12" width="36" height="40" rx="4" fill="#282a36" stroke="#bd93f9" stroke-width="2"/><path d="M22 24h20M22 30h20M22 36h14" stroke="#50fa7b" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="16" r="6" fill="#bd93f9"/><path d="M46 14l1-2 2 1-1 2zM50 14l1 2-2 1-1-2z" fill="#282a36"/></svg></div>
+    <div class="name">ProjectSite</div>
+    <div class="tagline">TOML · Jinja2 · Python</div>
   </div>
   <hr class="sidebar-divider">
   <ul class="sidebar-nav">
-    <li><a href="#hero"><span class="icon">{{ icon("home") }}</span> Home</a></li>
-    {% for section in sections %}
-    <li><a href="#{{ section.id }}"><span class="icon">{{ icon(section.icon) }}</span> {{ section.title }}</a></li>
-    {% endfor %}
+    <li><a href="#hero"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/></svg>
+
+</span> Home</a></li>
+    
+    <li><a href="#features"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3,3H11V11H3V3M3,13H11V21H3V13M13,3H21V11H13V3M13,13H21V21H13V13Z"/></svg>
+
+</span> Features</a></li>
+    
+    <li><a href="#usage"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg>
+
+</span> Usage</a></li>
+    
+    <li><a href="#stack"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12,16L19.36,10.27L21,9L12,3L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,20L21,14.07L19.37,12.8L12,18.54Z"/></svg>
+
+</span> Tech Stack</a></li>
+    
   </ul>
   <hr class="sidebar-divider">
   <div class="sidebar-footer">
@@ -482,76 +480,86 @@
 
   <section id="hero" class="hero">
     <div class="container">
-      <h1>{{ project.name }}</h1>
-      <p class="tagline">{{ project.tagline }}</p>
-      <p class="subtitle">{{ project.subtitle }}</p>
+      <h1>ProjectSite</h1>
+      <p class="tagline">Static site generator for GitHub Pages</p>
+      <p class="subtitle">Generates self-contained Dracula-themed HTML project pages from TOML data plus a Jinja2 template. Batch-generates all projects from one command.</p>
       <div class="cta">
-        <a href="{{ project.github_url }}" class="btn btn-primary">View on GitHub</a>
-        {% if project.quickstart_url %}
-        <a href="{{ project.quickstart_url }}" class="btn btn-outline">Quick Start</a>
-        {% endif %}
+        <a href="https://github.com/yuzu-octopus/ProjectSite" class="btn btn-primary">View on GitHub</a>
+        
+        <a href="#usage" class="btn btn-outline">Quick Start</a>
+        
       </div>
     </div>
   </section>
 
-  {% for section in sections %}
-  <section id="{{ section.id }}">
+  
+  <section id="features">
     <div class="container">
-      <h2>{{ section.title }}</h2>
+      <h2>Features</h2>
 
-      {% if section.type == "features" %}
+      
       <div class="grid">
-        {% for item in section["items"] %}
+        
         <div class="card">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.body }}</p>
+          <h3>TOML-Driven</h3>
+          <p>Write project data in clean TOML. No HTML editing needed. Each project gets one .toml file with all its content.</p>
         </div>
-        {% endfor %}
+        
+        <div class="card">
+          <h3>Jinja2 Template</h3>
+          <p>Single template with Dracula theme, JetBrains Mono font, sidebar navigation, and responsive layout. Update the look of all projects by editing one file.</p>
+        </div>
+        
+        <div class="card">
+          <h3>Batch Mode</h3>
+          <p>Generate all project pages at once with --batch. Each .toml becomes docs/<name>/index.html — ready for GitHub Pages.</p>
+        </div>
+        
+        <div class="card">
+          <h3>Per-Project CI</h3>
+          <p>Each project repo runs the generator in its own GitHub Actions workflow. The .toml is the single source of truth.</p>
+        </div>
+        
       </div>
 
-      {% elif section.type == "table" %}
-      <table>
-        <thead>
-          <tr>{% for header in section.headers %}<th>{{ header }}</th>{% endfor %}</tr>
-        </thead>
-        <tbody>
-          {% for row in section.rows %}
-          <tr>{% for cell in row.cells %}<td>{{ cell }}</td>{% endfor %}</tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      {% elif section.type == "steps" %}
-      <ul class="steps">
-        {% for item in section["items"] %}
-        <li><strong>{{ item.title }}</strong> &mdash; {{ item.body }}</li>
-        {% endfor %}
-      </ul>
-
-      {% elif section.type == "terms" %}
-      <ul class="terms">
-        {% for item in section["items"] %}
-        <li><span class="term">{{ item.term }}</span> &mdash; {{ item.definition }}</li>
-        {% endfor %}
-      </ul>
-
-      {% elif section.type == "code_block" %}
-      <pre><code>{{ section.code | e }}</code></pre>
-
-      {% elif section.type == "stack" %}
-      <div class="stack">
-        {% for item in section["items"] %}
-        <span class="badge"><strong>{{ item.name }}</strong> &mdash; {{ item.description }}</span>
-        {% endfor %}
-      </div>
-
-      {% elif section.type == "text" %}
-      {{ section.body }}
-
-      {% endif %}
+      
     </div>
   </section>
-  {% endfor %}
+  
+  <section id="usage">
+    <div class="container">
+      <h2>Usage</h2>
+
+      
+      <pre><code># Single project
+uv run python genpage.py --input project.toml --output docs/index.html
+
+# Batch mode — all .toml files in a directory
+uv run python genpage.py --input projects/ --output docs/ --batch</code></pre>
+
+      
+    </div>
+  </section>
+  
+  <section id="stack">
+    <div class="container">
+      <h2>Tech Stack</h2>
+
+      
+      <div class="stack">
+        
+        <span class="badge"><strong>Python</strong> &mdash; generator script + stdlib tomllib</span>
+        
+        <span class="badge"><strong>Jinja2</strong> &mdash; HTML templating engine</span>
+        
+        <span class="badge"><strong>uv</strong> &mdash; Python package manager</span>
+        
+      </div>
+
+      
+    </div>
+  </section>
+  
 
 </main>
 

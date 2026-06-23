@@ -1,0 +1,65 @@
+[project]
+name = "ProjectSite"
+tagline = "Static site generator for GitHub Pages"
+subtitle = "Generates self-contained Dracula-themed HTML project pages from TOML data plus a Jinja2 template. Batch-generates all projects from one command."
+description = "Static site generator for GitHub project pages"
+github_url = "https://github.com/yuzu-octopus/ProjectSite"
+page_url = "https://yuzu-octopus.github.io/ProjectSite/"
+quickstart_url = "#usage"
+logo_svg = """<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="12" fill="#44475a"/><rect x="14" y="12" width="36" height="40" rx="4" fill="#282a36" stroke="#bd93f9" stroke-width="2"/><path d="M22 24h20M22 30h20M22 36h14" stroke="#50fa7b" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="16" r="6" fill="#bd93f9"/><path d="M46 14l1-2 2 1-1 2zM50 14l1 2-2 1-1-2z" fill="#282a36"/></svg>"""
+favicon_data = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='10' fill='%23282a36'/><rect x='14' y='12' width='36' height='40' rx='4' fill='%2344475a' stroke='%23bd93f9' stroke-width='2'/><path d='M22 24h20M22 30h20M22 36h14' stroke='%2350fa7b' stroke-width='2' stroke-linecap='round'/></svg>"""
+
+[brand]
+tagline = "TOML · Jinja2 · Python"
+
+[[sections]]
+id = "features"
+type = "features"
+title = "Features"
+icon = "grid"
+
+[[sections.items]]
+title = "TOML-Driven"
+body = "Write project data in clean TOML. No HTML editing needed. Each project gets one .toml file with all its content."
+
+[[sections.items]]
+title = "Jinja2 Template"
+body = "Single template with Dracula theme, JetBrains Mono font, sidebar navigation, and responsive layout. Update the look of all projects by editing one file."
+
+[[sections.items]]
+title = "Batch Mode"
+body = "Generate all project pages at once with --batch. Each .toml becomes docs/<name>/index.html — ready for GitHub Pages."
+
+[[sections.items]]
+title = "Per-Project CI"
+body = "Each project repo runs the generator in its own GitHub Actions workflow. The .toml is the single source of truth."
+
+[[sections]]
+id = "usage"
+type = "code_block"
+title = "Usage"
+icon = "play"
+code = """
+# Single project
+uv run python genpage.py --input project.toml --output docs/index.html
+
+# Batch mode — all .toml files in a directory
+uv run python genpage.py --input projects/ --output docs/ --batch"""
+
+[[sections]]
+id = "stack"
+type = "stack"
+title = "Tech Stack"
+icon = "layers"
+
+[[sections.items]]
+name = "Python"
+description = "generator script + stdlib tomllib"
+
+[[sections.items]]
+name = "Jinja2"
+description = "HTML templating engine"
+
+[[sections.items]]
+name = "uv"
+description = "Python package manager"
