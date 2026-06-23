@@ -2,9 +2,9 @@
 feature: projectpage-generator
 status: delivered
 specs:
-  - docs/compose/specs/2026-06-23-projectpage-generator-design.md
+  - compose/specs/2026-06-23-projectpage-generator-design.md
 plans:
-  - docs/compose/plans/2026-06-23-projectpage-generator.md
+  - compose/plans/2026-06-23-projectpage-generator.md
 branch: main
 commits: 3e325d8..44f5ac8
 ---
@@ -109,5 +109,5 @@ generator files change.
 
 | File | Role | Notes |
 |------|------|-------|
-| `docs/compose/specs/2026-06-23-projectpage-generator-design.md` | Design spec | Complete schema and architecture |
-| `docs/compose/plans/2026-06-23-projectpage-generator.md` | Implementation plan | 6 tasks, fully executed |
+| `compose/specs/2026-06-23-projectpage-generator-design.md` | Design spec | Complete schema and architecture |
+| `compose/plans/2026-06-23-projectpage-generator.md` | Implementation plan | 6 tasks, fully executed |

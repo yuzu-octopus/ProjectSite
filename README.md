@@ -208,3 +208,8 @@ jobs:
 | `genpage.py` | CLI entry point — reads TOML, renders template, writes HTML |
 | `template.html.j2` | Jinja2 template — Dracula theme, all section types |
 | `pyproject.toml` | Python metadata, dependency on `jinja2` |
+
+## Notes
+
+- Add a **`.nojekyll`** file to the output directory (`docs/`) to prevent GitHub
+  Pages' default Jekyll build from interfering with the generated HTML.
