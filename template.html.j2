@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ project.name }} | {{ project.tagline }}</title>
+  <meta name="description" content="{{ project.description }}">
+  <meta name="theme-color" content="#282a36">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ project.name }} | {{ project.tagline }}">
+  <meta property="og:description" content="{{ project.description }}">
+  <meta property="og:url" content="{{ project.page_url }}">
+  {% if project.og_image %}
+  <meta property="og:image" content="{{ project.page_url }}{{ project.og_image }}">
+  {% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ project.name }} | {{ project.tagline }}">
+  <meta name="twitter:description" content="{{ project.description }}">
+  {% if project.og_image %}
+  <meta name="twitter:image" content="{{ project.page_url }}{{ project.og_image }}">
+  {% endif %}
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{{ project.favicon_data | urlencode }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #282a36;
+      --panel: #44475a;
+      --fg: #f8f8f2;
+      --muted: #6272a4;
+      --purple: #bd93f9;
+      --pink: #ff79c6;
+      --cyan: #8be9fd;
+      --green: #50fa7b;
+      --orange: #ffb86c;
+      --red: #ff5555;
+      --yellow: #f1fa8c;
+      --font: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scrollbar-width: thin; scrollbar-color: var(--panel) var(--bg); }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: var(--pink); }
+
+    h1, h2, h3, h4 { font-weight: 700; }
+
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 240px;
+      background: var(--panel);
+      border-right: 1px solid var(--muted);
+      display: flex;
+      flex-direction: column;
+      z-index: 1200;
+    }
+
+    .sidebar-brand {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .sidebar-brand .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .sidebar-brand .logo svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .sidebar-brand .name {
+      color: var(--purple);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .sidebar-brand .tagline {
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.66;
+    }
+
+    .sidebar-divider {
+      border: none;
+      border-top: 1px solid var(--muted);
+      margin: 0;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      list-style: none;
+    }
+
+    .sidebar-nav li {
+      margin: 0;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 8px 0;
+      min-height: 48px;
+      color: var(--fg);
+      font-size: 1rem;
+      transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .sidebar-nav a:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-nav a .icon {
+      width: 56px;
+      min-width: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-nav a .icon svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      font-size: 0.75rem;
+      line-height: 1.66;
+      color: var(--muted);
+      padding: 16px;
+      text-align: left;
+    }
+
+    .sidebar-footer div { margin-bottom: 0; }
+
+    .sidebar-footer a {
+      color: var(--purple);
+    }
+
+    .main {
+      margin-left: 240px;
+      min-height: 100vh;
+    }
+
+    section {
+      padding: 48px 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: var(--purple);
+      border-bottom: 2px solid var(--purple);
+      padding-bottom: 8px;
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 40px 48px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+
+    .hero .tagline {
+      font-size: 1.2rem;
+      color: var(--fg);
+      margin-bottom: 16px;
+    }
+
+    .hero .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 650px;
+      margin: 0 auto 32px;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      border: 1px solid var(--muted);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: var(--bg);
+      border-color: var(--purple);
+    }
+
+    .btn-primary:hover {
+      background: var(--pink);
+      border-color: var(--pink);
+      color: var(--fg);
+    }
+
+    .btn-outline {
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    .btn-outline:hover {
+      color: var(--pink);
+      border-color: var(--pink);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--purple);
+    }
+
+    .card h3 {
+      color: var(--purple);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--fg);
+      font-size: 0.8rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 0.8rem;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--muted);
+    }
+
+    th {
+      background: var(--bg);
+      color: var(--fg);
+      font-weight: 700;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: var(--bg); }
+
+    .status-comfortable { color: var(--green); }
+    .status-tight { color: var(--orange); }
+
+    pre {
+      background: var(--bg);
+      border: 1px solid var(--muted);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    pre code {
+      color: var(--green);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: var(--font);
+      color: var(--green);
+      background: var(--panel);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.8em;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+    }
+
+    .steps {
+      list-style: none;
+      padding: 0;
+    }
+
+    .steps li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--muted);
+      color: var(--fg);
+      font-size: 0.85rem;
+    }
+
+    .steps li:last-child { border-bottom: none; }
+
+    .steps li strong { color: var(--purple); }
+
+    .stats {
+      list-style: none;
+      padding: 0;
+    }
+
+    .stats li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--muted);
+      color: var(--fg);
+      font-size: 0.85rem;
+    }
+
+    .stats li:last-child { border-bottom: none; }
+
+    .stats li strong { color: var(--purple); }
+
+    .terms {
+      list-style: none;
+      padding: 0;
+    }
+
+    .terms li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .terms li:last-child { border-bottom: none; }
+
+    .terms li .term {
+      color: var(--purple);
+      font-weight: 700;
+    }
+
+    .stack {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stack .badge {
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--fg);
+    }
+
+    .stack .badge strong { color: var(--purple); }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--panel); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    .skip-link { position: absolute; left: -9999px; }
+    .skip-link:focus { left: 8px; top: 8px; background: var(--purple); color: var(--bg); padding: 8px 12px; z-index: 1300; }
+
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1200;
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      color: var(--fg);
+      padding: 8px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-toggle:hover {
+      background: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .mobile-toggle { display: block; }
+      .sidebar.open { display: flex; width: 240px; }
+      .main.shifted { margin-left: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+{% macro icon(name) %}
+{% if name == "home" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/></svg>
+{% elif name == "grid" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3,3H11V11H3V3M3,13H11V21H3V13M13,3H21V11H13V3M13,13H21V21H13V13Z"/></svg>
+{% elif name == "info" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
+{% elif name == "chip" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17,7A2,2 0 0,1 19,9V17A2,2 0 0,1 17,19H7A2,2 0 0,1 5,17V9A2,2 0 0,1 7,7H17M7,9V17H17V9H7M12,2A2,2 0 0,1 14,4V6H15V4A3,3 0 0,0 12,1A3,3 0 0,0 9,4V6H10V4A2,2 0 0,1 12,2Z"/></svg>
+{% elif name == "layers" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12,16L19.36,10.27L21,9L12,3L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,20L21,14.07L19.37,12.8L12,18.54Z"/></svg>
+{% elif name == "document" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10,19L12,17L14,19L15,18L13,16L15,14L14,13L12,15L10,13L9,14L11,16L9,18L10,19Z"/></svg>
+{% elif name == "play" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg>
+{% elif name == "gear" %}
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"/></svg>
+{% endif %}
+{% endmacro %}
+
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open'); document.querySelector('.main').classList.toggle('shifted');" aria-label="Toggle mobile menu">&#9776;</button>
+<a class="skip-link" href="#hero">Skip to content</a>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo">{{ project.logo_svg }}</div>
+    <div class="name">{{ project.name }}</div>
+    <div class="tagline">{{ brand.tagline }}</div>
+  </div>
+  <hr class="sidebar-divider">
+  <ul class="sidebar-nav">
+    <li><a href="#hero"><span class="icon">{{ icon("home") }}</span> Home</a></li>
+    {% for section in sections %}
+    <li><a href="#{{ section.id }}"><span class="icon">{{ icon(section.icon) }}</span> {{ section.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <hr class="sidebar-divider">
+  <div class="sidebar-footer">
+    <div>&copy; 2026 yuzu-octopus</div>
+    <div>Powered by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a></div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <section id="hero" class="hero">
+    <div class="container">
+      <h1>{{ project.name }}</h1>
+      <p class="tagline">{{ project.tagline }}</p>
+      <p class="subtitle">{{ project.subtitle }}</p>
+      <div class="cta">
+        <a href="{{ project.github_url }}" class="btn btn-primary">View on GitHub</a>
+        {% if project.quickstart_url %}
+        <a href="{{ project.quickstart_url }}" class="btn btn-outline">Quick Start</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  {% for section in sections %}
+  <section id="{{ section.id }}">
+    <div class="container">
+      <h2>{{ section.title }}</h2>
+
+      {% if section.type == "features" %}
+      <div class="grid">
+        {% for item in section.items %}
+        <div class="card">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.body }}</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% elif section.type == "table" %}
+      <table>
+        <thead>
+          <tr>{% for header in section.headers %}<th>{{ header }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+          {% for row in section.rows %}
+          <tr>{% for cell in row.cells %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% elif section.type == "steps" %}
+      <ul class="steps">
+        {% for item in section.items %}
+        <li><strong>{{ item.title }}</strong> &mdash; {{ item.body }}</li>
+        {% endfor %}
+      </ul>
+
+      {% elif section.type == "terms" %}
+      <ul class="terms">
+        {% for item in section.items %}
+        <li><span class="term">{{ item.term }}</span> &mdash; {{ item.definition }}</li>
+        {% endfor %}
+      </ul>
+
+      {% elif section.type == "code_block" %}
+      <pre><code>{{ section.code | e }}</code></pre>
+
+      {% elif section.type == "stack" %}
+      <div class="stack">
+        {% for item in section.items %}
+        <span class="badge"><strong>{{ item.name }}</strong> &mdash; {{ item.description }}</span>
+        {% endfor %}
+      </div>
+
+      {% elif section.type == "text" %}
+      {{ section.body }}
+
+      {% endif %}
+    </div>
+  </section>
+  {% endfor %}
+
+</main>
+
+</body>
+</html>
