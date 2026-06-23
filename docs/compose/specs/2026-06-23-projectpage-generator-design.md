@@ -1,5 +1,10 @@
 # ProjectPage — Static Site Generator for GitHub Project Pages
 
+> [!NOTE]
+> This document may not reflect the current implementation.
+> See the final report for up-to-date state:
+> [Final Report](../reports/projectpage-generator.md)
+
 ## [S1] Problem
 
 Multiple projects (TradingBot, CTF-LLM) share an identical layout for their
