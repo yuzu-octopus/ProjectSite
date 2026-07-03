@@ -69,7 +69,7 @@
       outline-offset: 2px;
     }
 
-    h1, h2, h3, h4 { font-weight: 700; }
+    h1, h2, h3, h4 { font-weight: 700; text-wrap: balance; }
 
     .sidebar {
       position: fixed;
@@ -196,7 +196,7 @@
       color: var(--purple);
       border-bottom: 2px solid var(--purple);
       padding-bottom: 8px;
-      font-size: 1.6rem;
+      font-size: clamp(1.2rem, 2vw + 0.8rem, 1.6rem);
       margin-bottom: 24px;
     }
 
@@ -206,7 +206,7 @@
     }
 
     .hero h1 {
-      font-size: 3rem;
+      font-size: clamp(1.8rem, 4vw + 1rem, 3rem);
       color: var(--purple);
       margin-bottom: 12px;
     }
@@ -247,8 +247,8 @@
     }
 
     .btn-primary:hover {
-      background: var(--pink);
-      border-color: var(--pink);
+      background: color-mix(in oklch, var(--purple), black 15%);
+      border-color: color-mix(in oklch, var(--purple), black 15%);
       color: var(--fg);
     }
 

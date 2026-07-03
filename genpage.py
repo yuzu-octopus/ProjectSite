@@ -16,6 +16,27 @@ def load_toml(path: Path) -> dict:
         return tomllib.load(f)
 
 
+REQUIRED_TOP_KEYS = {"project", "brand", "sections"}
+REQUIRED_PROJECT_KEYS = {
+    "name", "tagline", "subtitle", "description",
+    "github_url", "page_url", "logo_svg", "favicon_data",
+}
+
+
+def validate(data: dict) -> None:
+    missing = REQUIRED_TOP_KEYS - data.keys()
+    if missing:
+        msg = f"Missing top-level keys: {', '.join(sorted(missing))}"
+        raise SystemExit(msg)
+    for key in REQUIRED_PROJECT_KEYS:
+        if key not in data["project"]:
+            msg = f"Missing project.{key}"
+            raise SystemExit(msg)
+    if not isinstance(data["sections"], list) or not data["sections"]:
+        msg = "sections must be a non-empty array"
+        raise SystemExit(msg)
+
+
 def render(template_name: str, data: dict) -> str:
     env = Environment(
         loader=FileSystemLoader(HERE),
@@ -27,6 +48,7 @@ def render(template_name: str, data: dict) -> str:
 
 def generate_one(input_path: Path, output_path: Path) -> None:
     data = load_toml(input_path)
+    validate(data)
     html = render(TEMPLATE, data)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
