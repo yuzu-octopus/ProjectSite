@@ -159,7 +159,35 @@ body = """
 
 Named SVG icons available for sidebar nav entries:
 
-`home` `grid` `info` `chip` `layers` `document` `play` `gear`
+`home` `grid` `info` `chip` `layers` `document` `play` `gear` `link`
+
+#### `type = "links"` — external resource cards
+
+```toml
+[[sections]]
+id = "links"
+type = "links"
+title = "Related"
+icon = "link"
+
+[[sections.items]]
+title = "Dracula Theme"
+url = "https://draculatheme.com"
+description = "Official Dracula color palette"
+```
+
+#### `type = "custom"` — injectable HTML block
+
+```toml
+[[sections]]
+id = "notice"
+type = "custom"
+body = """
+<div style="padding: 1rem; border-left: 3px solid var(--cyan);">
+  <strong>Custom content</strong> goes here.
+</div>
+"""
+```
 
 ## CI Setup (per project)
 
