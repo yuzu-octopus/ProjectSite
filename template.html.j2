@@ -441,18 +441,23 @@
     /* Prism.js Dracula theme override — every token type */
     pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; font-family: var(--font); font-size: 0.8rem; line-height: 1.6; }
     code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; background: none; padding: 0; color: var(--fg); }
-    .token.comment, .token.prolog, .token.cdata { color: var(--muted); }
+    .token.comment, .token.prolog, .token.cdata, .token.doctype { color: var(--muted); }
     .token.punctuation { color: var(--fg); }
     .token.namespace { opacity: 0.8; }
     .token.keyword, .token.operator { color: var(--pink); }
     .token.string, .token.attr-value, .token.regex { color: var(--yellow); }
     .token.function, .token.attr-name { color: var(--green); }
     .token.number, .token.boolean, .token.constant, .token.parameter, .token.variable { color: var(--orange); }
-    .token.class-name, .token.builtin, .token.property, .token.url { color: var(--cyan); }
+    .token.class-name, .token.builtin, .token.property, .token.url, .token.symbol { color: var(--cyan); }
     .token.tag, .token.selector, .token.entity, .token.atrule { color: var(--pink); }
     .token.decorator { color: var(--purple); }
-    .token.important { font-weight: 700; }
+    .token.important, .token.bold { font-weight: 700; }
     .token.italic { font-style: italic; }
+    .token.output { color: var(--fg); }
+    .token.deleted { color: var(--red); }
+    .token.inserted { color: var(--green); }
+    .token.shell-symbol { color: var(--green); }
+    .token.title { color: var(--purple); }
 
     /* Utility classes for custom HTML sections */
     .callout {
