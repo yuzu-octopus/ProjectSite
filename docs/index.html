@@ -1037,7 +1037,7 @@ jobs:
       - name: Commit generated page
         run: |
           git config user.name &#34;github-actions[bot]&#34;
-          git config user.email &#34;github-actions[bot]@users.noreply.github.com&#34;
+          git config user.email &#34;41898282+github-actions[bot]@users.noreply.github.com&#34;
           git add docs/
           git diff --cached --quiet || git commit -m &#34;ci: regenerate project page [skip ci]&#34;
           git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}

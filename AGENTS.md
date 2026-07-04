@@ -11,3 +11,6 @@ ruff check genpage.py
 
 ## Type check
 pyright genpage.py
+
+## Test
+uv run pytest tests/ -v
