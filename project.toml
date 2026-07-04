@@ -64,9 +64,11 @@ jobs:
           repository: yuzu-octopus/ProjectSite
           path: generator
           persist-credentials: false
+      - name: Install system deps
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev
       - name: Generate page
         run: |
-          pip install jinja2
+          pip install jinja2 pillow cairosvg
           python generator/genpage.py --input project.toml --output docs/index.html
       - name: Commit generated page
         run: |
@@ -168,7 +170,7 @@ print(f"First 10 Fibonacci: {result}")
 <ul class="timeline">
   <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 1</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Lorem Ipsum</strong><p>Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.</p></div></li>
   <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 2</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Ut Enim Ad Minim</strong><p>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div></li>
-  <li class="timeline-item"><div class="timeline-date-col"></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Duis Aute Irure</strong><p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p></div></li>
+  <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 3</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Duis Aute Irure</strong><p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p></div></li>
   <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 4</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Excepteur Sint</strong><p>Occaecat cupidatat non proident sunt in culpa qui officia deserunt.</p></div></li>
 </ul>
 
