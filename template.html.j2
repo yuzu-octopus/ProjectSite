@@ -404,11 +404,17 @@
       padding: 0 4px;
     }
     .workflow-dot {
-      width: 16px;
-      height: 16px;
-      min-width: 16px;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
       border-radius: 50%;
       background: var(--purple);
+      color: var(--bg);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 1;
     }
     .workflow-line {
@@ -429,15 +435,6 @@
     .workflow-card:hover {
       border-color: var(--purple);
       transform: translateY(-2px);
-    }
-    .workflow-step {
-      display: inline-block;
-      font-size: 0.7rem;
-      color: var(--bg);
-      background: var(--purple);
-      padding: 1px 8px;
-      border-radius: 8px;
-      margin-bottom: 8px;
     }
     .workflow-card h4 {
       color: var(--purple);
@@ -997,11 +994,10 @@
         <div class="workflow-item">
           <div class="workflow-top">
             <div class="workflow-line"></div>
-            <div class="workflow-dot"></div>
+            <div class="workflow-dot">{{ loop.index }}</div>
             <div class="workflow-line"></div>
           </div>
           <div class="workflow-card">
-            <span class="workflow-step">{{ loop.index }}</span>
             <h4>{{ item.title }}</h4>
             <p>{{ item.body }}</p>
           </div>
