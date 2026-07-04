@@ -377,6 +377,15 @@ Dracula theme, showing the project logo on the left and name + tagline +
 subtitle on the right. The template references it in `og:image` and
 `twitter:image` meta tags automatically.
 
+How it works:
+- **Pillow** creates the 1200×630 canvas and renders all text (name, tagline,
+  subtitle) using the system JetBrains Mono font if available, falling back
+  to Pillow's default font otherwise.
+- **cairosvg** renders only the logo SVG, which is pasted onto the canvas as
+  an RGBA image.
+- Long names/taglines are truncated with ellipsis. Subtitles are
+  word-boundary wrapped (max 4 lines). The text block is vertically centered.
+
 Requirements for OG image generation:
 - `pillow` and `cairosvg` Python packages (installed automatically via `uv`)
 - Cairo C library (`brew install cairo` on macOS, `apt install libcairo2` on
