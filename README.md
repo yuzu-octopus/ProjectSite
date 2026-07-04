@@ -30,9 +30,9 @@ tables and an array of sections.
 | `description` | string | Meta description for SEO |
 | `github_url` | string | Link to the GitHub repo |
 | `page_url` | string | URL where the page will be served |
-| `quickstart_url` | string | Optional — link for the "Quick Start" CTA button (usually `"#quickstart"`) |
-| `logo_svg` | string | Inline SVG for the sidebar logo (64×64) |
-| `favicon_data` | string | Inline SVG for the browser favicon |
+| `logo_svg` | string | Inline SVG for the sidebar logo (64×64). Use CSS variables for theme support. |
+| `favicon_dark` | string | Inline SVG for the dark theme favicon (32×32) |
+| `favicon_light` | string | Inline SVG for the light theme favicon (32×32) |
 | `og_image` | string | Optional — filename of an OG image (e.g. `"og-image.png"`) |
 
 ### `[brand]` — required
@@ -226,11 +226,11 @@ jobs:
           python generator/genpage.py --input project.toml --output docs/index.html
       - name: Commit generated page
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/
           git diff --cached --quiet || git commit -m "ci: regenerate project page [skip ci]"
-          git push
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
 ```
 
 ## Generator Files
