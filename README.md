@@ -205,14 +205,14 @@ body = """
 
 #### `type = "timeline"` — vertical connector timeline
 
-Items appear as a vertical list with connector dots and a line on the left. Optional `date` field.
+Items appear as a vertical list with connector dots and a continuous line on the left. Optional `date` field for labels like "Phase 1" or dates.
 
 ```toml
 [[sections]]
 id = "milestones"
 type = "timeline"
 title = "Milestones"
-icon = "layers"
+icon = "calendar"
 
 [[sections.items]]
 title = "Phase 1"
@@ -222,11 +222,12 @@ date = "Jan 2026"
 [[sections.items]]
 title = "Phase 2"
 body = "Optimization"
+date = "Mar 2026"
 ```
 
 #### `type = "workflow"` — horizontal scroll-snap cards
 
-Items display as numbered cards in a horizontally scrollable row with CSS scroll-snap. Best for sequential steps or pipeline stages.
+Items display as numbered cards in a horizontally scrollable row with CSS scroll-snap and hover lift effect. Best for sequential steps or pipeline stages.
 
 ```toml
 [[sections]]
@@ -341,6 +342,13 @@ These elements are automatically styled in the Dracula/Alucard theme:
 | `<details>` / `<summary>` | Collapsible section with purple summary |
 | `<code>` | Green code on panel background |
 | `<a>` | Cyan links, pink on hover |
+
+### UI Details
+
+- **Copy button**: Code blocks get an icon-based copy button (Material Symbols). Shows check on success, close on failure.
+- **Card hover**: Cards and workflow cards lift on hover with border-color transition.
+- **Scroll-spy**: Sidebar highlights the current section. Works correctly for tall sections and custom HTML blocks.
+- **No shadows**: Clean flat design — no box-shadow on any element.
 
 ### Available CSS Variables
 
