@@ -24,6 +24,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js" defer></script>
   <style>
     :root {
       color-scheme: dark;
@@ -368,6 +376,55 @@
       padding: 0;
     }
 
+    /* Prism.js Dracula theme override */
+    pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; }
+    code[class*="language-"] { text-shadow: none; }
+    .token.comment { color: var(--muted); }
+    .token.keyword { color: var(--pink); }
+    .token.string { color: var(--yellow); }
+    .token.function { color: var(--green); }
+    .token.number { color: var(--orange); }
+    .token.operator { color: var(--pink); }
+    .token.punctuation { color: var(--fg); }
+    .token.class-name { color: var(--cyan); }
+    .token.boolean { color: var(--orange); }
+    .token.builtin { color: var(--cyan); }
+    .token.decorator { color: var(--purple); }
+    .token.attr-name { color: var(--green); }
+    .token.attr-value { color: var(--yellow); }
+    .token.tag { color: var(--pink); }
+
+    /* Utility classes for custom HTML sections */
+    .callout {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--muted);
+      background: color-mix(in srgb, var(--panel) 50%, transparent);
+      margin: 12px 0;
+      font-size: 0.85rem;
+    }
+    .callout-info { border-left-color: var(--cyan); }
+    .callout-warning { border-left-color: var(--orange); }
+    .callout-success { border-left-color: var(--green); }
+    .callout-error { border-left-color: var(--red); }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      font-family: var(--font);
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--muted);
+      margin: 24px 0;
+    }
+
     .steps {
       list-style: none;
       padding: 0;
@@ -707,7 +764,11 @@
       </ul>
 
       {% elif section.type == "code_block" %}
+      {% if section.language %}
+      <pre><code class="language-{{ section.language }}">{{ section.code | e }}</code></pre>
+      {% else %}
       <pre><code>{{ section.code | e }}</code></pre>
+      {% endif %}
 
       {% elif section.type == "stack" %}
       <div class="stack">

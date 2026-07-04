@@ -238,8 +238,61 @@ jobs:
 | File | Purpose |
 |------|---------|
 | `genpage.py` | CLI entry point — reads TOML, renders template, writes HTML |
-| `template.html.j2` | Jinja2 template — Dracula theme, all section types |
+| `template.html.j2` | Jinja2 template — Dracula/Alucard theme, all section types |
 | `pyproject.toml` | Python metadata, dependency on `jinja2` |
+
+## Custom HTML Classes
+
+When using `type = "custom"` or `type = "text"`, you can use these CSS classes.
+All classes use `var(--*)` tokens — they work in both dark and light themes.
+
+### Callouts
+
+```html
+<div class="callout callout-info">This is informational.</div>
+<div class="callout callout-warning">This is a warning.</div>
+<div class="callout callout-success">This succeeded.</div>
+<div class="callout callout-error">This is an error.</div>
+```
+
+### Keyboard Shortcuts
+
+```html
+Press <kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">K</kbd> to search.
+```
+
+### Dividers
+
+```html
+<hr class="divider">
+```
+
+### Available CSS Variables
+
+Use these in inline styles for theme consistency:
+
+`--bg` `--panel` `--fg` `--muted` `--purple` `--pink` `--cyan` `--green`
+`--orange` `--red` `--yellow`
+
+## Syntax Highlighting
+
+Code blocks support syntax highlighting via Prism.js (loaded from CDN).
+Add a `language` field to your `code_block` section:
+
+```toml
+[[sections]]
+id = "quickstart"
+type = "code_block"
+title = "Quick Start"
+icon = "play"
+language = "python"
+code = """
+def hello():
+    print("Hello, world!")
+"""
+```
+
+Supported languages: Python, JavaScript, HTML/Markup, CSS, Bash, TOML.
 
 ## Notes
 
