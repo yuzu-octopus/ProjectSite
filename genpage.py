@@ -93,12 +93,18 @@ def validate(data: dict) -> None:
         raise SystemExit(msg)
 
     project = data.get("project", {})
+    if not isinstance(project, dict):
+        msg = "project must be a table"
+        raise SystemExit(msg)
     for key in REQUIRED_PROJECT_KEYS:
         if key not in project:
             msg = f"Missing project.{key}"
             raise SystemExit(msg)
 
     brand = data.get("brand", {})
+    if not isinstance(brand, dict):
+        msg = "brand must be a table"
+        raise SystemExit(msg)
     if "tagline" not in brand:
         msg = "Missing brand.tagline"
         raise SystemExit(msg)

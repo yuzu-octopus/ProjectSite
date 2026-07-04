@@ -68,6 +68,14 @@ class TestValidateTopKeys:
         with pytest.raises(SystemExit, match="non-empty"):
             validate(_make_data(sections=[]))
 
+    def test_rejects_non_dict_project(self):
+        with pytest.raises(SystemExit, match="project must be a table"):
+            validate(_make_data(project="not a dict"))
+
+    def test_rejects_non_dict_brand(self):
+        with pytest.raises(SystemExit, match="brand must be a table"):
+            validate(_make_data(brand="not a dict"))
+
 
 class TestValidateProjectKeys:
     @pytest.mark.parametrize(
@@ -107,6 +115,12 @@ class TestValidateSections:
         with pytest.raises(SystemExit, match="requires 'items' to be a list"):
             validate(_make_data(sections=[sec]))
 
+    @pytest.mark.parametrize("bad_id", ["foo bar", "has.dot", "no spaces", ""])
+    def test_rejects_invalid_section_id(self, bad_id):
+        sec = {"id": bad_id, "type": "features", "icon": "grid", "items": []}
+        with pytest.raises(SystemExit, match="id must match"):
+            validate(_make_data(sections=[sec]))
+
 
 class TestValidatePerType:
     def test_code_block_requires_code(self):
@@ -136,6 +150,12 @@ class TestValidatePerType:
 
     def test_notice_type_invalid(self):
         sec = {"id": "x", "type": "notice", "icon": "info", "notice_type": "banana", "body": "hi"}
+        with pytest.raises(SystemExit, match="notice_type"):
+            validate(_make_data(sections=[sec]))
+
+    @pytest.mark.parametrize("bad_type", ["INFO", "", "infoo"])
+    def test_notice_type_edge_cases(self, bad_type):
+        sec = {"id": "x", "type": "notice", "icon": "info", "notice_type": bad_type, "body": "hi"}
         with pytest.raises(SystemExit, match="notice_type"):
             validate(_make_data(sections=[sec]))
 
