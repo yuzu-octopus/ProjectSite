@@ -107,3 +107,208 @@ description = "HTML templating engine"
 [[sections.items]]
 name = "uv"
 description = "Python package manager"
+
+[[sections]]
+id = "showcase-features"
+type = "features"
+title = "Showcase — Feature Cards"
+icon = "grid"
+
+[[sections.items]]
+title = "Lorem Ipsum Dolor"
+body = "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+
+[[sections.items]]
+title = "Ut Enim Ad Minim"
+body = "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure."
+
+[[sections.items]]
+title = "Duis Aute Irure"
+body = "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint."
+
+[[sections.items]]
+title = "Excepteur Sint Occaecat"
+body = "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis."
+
+[[sections]]
+id = "showcase-table"
+type = "table"
+title = "Showcase — Data Table"
+icon = "info"
+headers = ["Metric", "Value", "Change", "Status"]
+
+[[sections.rows]]
+cells = ["Lorem ipsum", "36.4%", "+2.1%", "Stable"]
+
+[[sections.rows]]
+cells = ["Dolor sit amet", "12.8K", "−0.4%", "Declining"]
+
+[[sections.rows]]
+cells = ["Consectetur adip", "847", "+12.3%", "Growing"]
+
+[[sections.rows]]
+cells = ["Sed do eiusmod", "3.2M", "+45.7%", "Surge"]
+
+[[sections.rows]]
+cells = ["Tempor incididunt", "92.1%", "−0.1%", "Stable"]
+
+[[sections]]
+id = "showcase-code"
+type = "code_block"
+title = "Showcase — Code Highlighting"
+icon = "code"
+language = "python"
+code = """
+def fibonacci(n: int) -> list[int]:
+    \"\"\"Generate first n Fibonacci numbers.\"\"\"
+    if n <= 0:
+        return []
+    fib = [0, 1]
+    for _ in range(2, n):
+        fib.append(fib[-1] + fib[-2])
+    return fib[:n]
+
+# Example usage
+result = fibonacci(10)
+print(f"First 10 Fibonacci: {result}")
+# Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+"""
+
+[[sections]]
+id = "showcase-notice"
+type = "notice"
+title = "Showcase — Callout Notice"
+icon = "info"
+notice_type = "warning"
+body = """
+<p><strong>Lorem ipsum dolor sit amet.</strong> Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
+"""
+
+[[sections]]
+id = "showcase-timeline"
+type = "timeline"
+title = "Showcase — Timeline"
+icon = "layers"
+
+[[sections.items]]
+title = "Lorem Ipsum"
+body = "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+date = "Phase 1"
+
+[[sections.items]]
+title = "Ut Enim Ad Minim"
+body = "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip."
+date = "Phase 2"
+
+[[sections.items]]
+title = "Duis Aute Irure"
+body = "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat."
+
+[[sections.items]]
+title = "Excepteur Sint"
+body = "Occaecat cupidatat non proident sunt in culpa qui officia deserunt."
+date = "Phase 4"
+
+[[sections]]
+id = "showcase-workflow"
+type = "workflow"
+title = "Showcase — Workflow Pipeline"
+icon = "layers"
+
+[[sections.items]]
+title = "Data Ingest"
+body = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+
+[[sections.items]]
+title = "Preprocess"
+body = "Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+
+[[sections.items]]
+title = "Train Model"
+body = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+
+[[sections.items]]
+title = "Validate"
+body = "Excepteur sint occaecat cupidatat non proident sunt in culpa qui."
+
+[[sections.items]]
+title = "Deploy"
+body = "Sed perspiciatis unde omnis iste natus error sit voluptatem accusantium."
+
+[[sections]]
+id = "showcase-steps"
+type = "steps"
+title = "Showcase — Numbered Steps"
+icon = "layers"
+
+[[sections.items]]
+title = "Step One: Investigate"
+body = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+
+[[sections.items]]
+title = "Step Two: Analyze"
+body = "Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip."
+
+[[sections.items]]
+title = "Step Three: Execute"
+body = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."
+
+[[sections.items]]
+title = "Step Four: Review"
+body = "Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt."
+
+[[sections]]
+id = "showcase-links"
+type = "links"
+title = "Showcase — Resource Links"
+icon = "link"
+
+[[sections.items]]
+title = "Lorem Ipsum Generator"
+url = "https://www.lipsum.com/"
+description = "Classic Lorem Ipsum text generator for placeholder content."
+
+[[sections.items]]
+title = "Dracula Theme"
+url = "https://draculatheme.com/"
+description = "Dark theme for over 300+ apps used by millions worldwide."
+
+[[sections.items]]
+title = "Material Symbols"
+url = "https://fonts.google.com/icons"
+description = "Variable icon font by Google — 3000+ icons, single-weight CDN."
+
+[[sections.items]]
+title = "Jinja2 Documentation"
+url = "https://jinja.palletsprojects.com/"
+description = "Official docs for the Jinja2 templating engine used in this project."
+
+[[sections]]
+id = "showcase-text"
+type = "text"
+title = "Showcase — Raw HTML"
+icon = "document"
+body = """
+<div class="callout callout-info">
+  <strong>Tip:</strong> Use <code>type = "text"</code> for arbitrary HTML content.
+  All CSS variables (<code>--bg</code>, <code>--fg</code>, <code>--purple</code>, etc.) are available.
+</div>
+<figure>
+  <figcaption>Sample styled elements in action:</figcaption>
+</figure>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+  <kbd class="kbd">Ctrl</kbd><span style="color:var(--muted)"> + </span><kbd class="kbd">K</kbd>
+  <span style="color:var(--muted)">&middot;</span>
+  <strong>Bold text</strong>
+  <span style="color:var(--muted)">&middot;</span>
+  <em>Italic text</em>
+</div>
+<hr class="divider">
+<blockquote>
+  <p>"This is a blockquote. Lorem ipsum dolor sit amet consectetur adipiscing elit."</p>
+</blockquote>
+<details>
+  <summary>Click to expand</summary>
+  <p style="margin-top:8px;font-size:0.85rem;color:var(--fg);">Hidden content inside a details/summary element. Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+</details>
+"""
