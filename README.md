@@ -317,7 +317,7 @@ def hello():
 """
 ```
 
-Supported languages: Python, JavaScript, TypeScript, HTML, CSS, Bash, TOML, YAML, JSON, PHP, Rust, Go, C, C++, Java, Swift, Kotlin, Docker, Markdown, Diff.
+Supported languages: Python, JavaScript, TypeScript, HTML, CSS, Bash, Shell Session, TOML, YAML, JSON, Rust, Go, C, C++, Java, Swift, Kotlin, Docker, Markdown, Diff, SQL, Lua, Ruby, PowerShell.
 
 ## Notes
 

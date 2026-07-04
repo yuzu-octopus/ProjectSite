@@ -42,6 +42,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-diff.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-lua.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-shell-session.min.js" defer></script>
   <style>
     :root {
       color-scheme: dark;
@@ -589,12 +594,8 @@
 
     .theme-toggle:hover {
       border-color: var(--purple);
+      color: var(--purple);
       transform: translateY(-1px);
-    }
-
-    .theme-toggle svg {
-      width: 20px;
-      height: 20px;
     }
 
     .theme-toggle .icon-moon { display: block; }
@@ -821,7 +822,7 @@
 
       
       
-      <pre><code>name: Deploy project page
+      <pre><code class="language-yaml">name: Deploy project page
 
 permissions:
   contents: write

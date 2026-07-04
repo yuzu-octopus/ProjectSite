@@ -37,6 +37,7 @@ id = "ci"
 type = "code_block"
 title = "CI Workflow"
 icon = "gear"
+language = "yaml"
 code = """
 name: Deploy project page
 
