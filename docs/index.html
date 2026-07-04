@@ -1259,8 +1259,7 @@ document.querySelector('.sidebar-nav').addEventListener('click', function(e) {
   var link = e.target.closest('a[href^="#"]');
   if (link) {
     closeSidebar();
-    navLinks.forEach(function(l) { l.classList.remove('active'); });
-    link.classList.add('active');
+    setActiveLink(link.getAttribute('href').slice(1));
   }
 });
 
@@ -1347,6 +1346,15 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 var sections = document.querySelectorAll('section[id]');
 var navLinks = document.querySelectorAll('.sidebar-nav a');
 var activeId = null;
+
+function setActiveLink(id) {
+  if (id === activeId) return;
+  activeId = id;
+  navLinks.forEach(function(link) {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+  });
+}
+
 // Track all sections' visibility so overlapping/tall sections don't break scroll-spy.
 // IntersectionObserver callbacks only report entries whose status *changed*, so we
 // maintain a full Map and recalculate the topmost visible section on every event.
@@ -1364,17 +1372,16 @@ var sectionObserver = new IntersectionObserver(function(entries) {
     }
   });
   if (best) {
-    var id = best.getAttribute('id');
-    if (id !== activeId) {
-      activeId = id;
-      navLinks.forEach(function(link) {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-      });
-    }
+    setActiveLink(best.getAttribute('id'));
   }
-}, { threshold: 0.1, rootMargin: '-80px 0px -60% 0px' });
+}, { threshold: 0, rootMargin: '-80px 0px -40% 0px' });
 
 sections.forEach(function(s) { sectionObserver.observe(s); });
+
+// Set initial active state on load (hero is at the top)
+if (sections.length > 0) {
+  setActiveLink(sections[0].getAttribute('id'));
+}
 </script>
 </body>
 </html>

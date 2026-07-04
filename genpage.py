@@ -187,13 +187,15 @@ def _find_jetbrains_font(weight: str = "Regular") -> str | None:
     patterns = [
         f"JetBrainsMono-{weight}.ttf",
         f"JetBrainsMono{weight}.ttf",
+        f"JetBrainsMonoNLNerdFont-{weight}.ttf",
+        f"JetBrainsMono*{weight}*.ttf",
         "JetBrainsMono*.ttf",
     ]
     for base in search_dirs:
         if not base.is_dir():
             continue
         for pat in patterns:
-            matches = sorted(base.glob(pat))
+            matches = sorted(base.rglob(pat))
             if matches:
                 return str(matches[0])
     return None
@@ -271,7 +273,7 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     except Exception:
         font_tagline = ImageFont.load_default()
     try:
-        font_subtitle = ImageFont.truetype(regular_path or "", 18) if regular_path else ImageFont.load_default()
+        font_subtitle = ImageFont.truetype(regular_path or "", 24) if regular_path else ImageFont.load_default()
     except Exception:
         font_subtitle = ImageFont.load_default()
 
@@ -313,10 +315,12 @@ def generate_og_image(project: dict, output_path: Path) -> None:
 
     # Calculate vertical centering for the text block
     subtitle_lines = _wrap_text(draw, subtitle, font_subtitle, max_text_width)
-    if len(subtitle_lines) > 4:
-        subtitle_lines = subtitle_lines[:4]
-        subtitle_lines[-1] = subtitle_lines[-1].rstrip(".") + "..."
-    subtitle_h = len(subtitle_lines) * 26
+    # Calculate subtitle height from actual text metrics, not hardcoded
+    subtitle_h = 0
+    for line in subtitle_lines:
+        lb = draw.textbbox((0, 0), line, font=font_subtitle)
+        subtitle_h += (lb[3] - lb[1]) + 10  # line height + gap
+    subtitle_h -= 10 if subtitle_lines else 0  # remove trailing gap
 
     accent_h = 4
     gap1 = 16  # gap between name and tagline
@@ -337,7 +341,7 @@ def generate_og_image(project: dict, output_path: Path) -> None:
         draw.text((text_x, y), line, fill=MUTED, font=font_subtitle)
         line_bbox = draw.textbbox((text_x, y), line, font=font_subtitle)
         last_subtitle_bottom = line_bbox[3]
-        y += 26
+        y = line_bbox[3] + 10  # 10px gap between subtitle lines
     y = last_subtitle_bottom + gap3
     draw.rectangle([text_x, y, text_x + 100, y + accent_h], fill=PURPLE)
 
