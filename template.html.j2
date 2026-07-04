@@ -369,7 +369,7 @@
       border: 1px solid var(--muted);
       border-radius: 8px;
       padding: 20px;
-      transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .card:hover {
@@ -434,10 +434,11 @@
       border-radius: 8px;
       padding: 16px;
       margin: 8px 8px 0;
-      transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
     .workflow-card:hover {
       border-color: var(--purple);
+      transform: translateY(-2px);
     }
     .workflow-card h4 {
       color: var(--purple);
@@ -856,13 +857,18 @@
       background: var(--panel);
       border: 1px solid var(--muted);
       color: var(--muted);
-      padding: 4px 8px;
+      padding: 4px 6px;
       border-radius: 6px;
-      font-size: 0.7rem;
-      font-family: var(--font);
       cursor: pointer;
       transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .code-block-wrapper .copy-btn .material-symbols-outlined {
+      font-size: 20px;
     }
     .code-block-wrapper .copy-btn:hover {
       color: var(--purple);
@@ -1252,16 +1258,25 @@ document.querySelectorAll('pre').forEach(function(pre) {
   wrapper.appendChild(pre);
   var btn = document.createElement('button');
   btn.className = 'copy-btn';
-  btn.textContent = 'Copy';
+  btn.setAttribute('aria-label', 'Copy code');
+  btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">content_copy</span>';
   btn.addEventListener('click', function() {
     var codeNode = pre.querySelector('code');
     var text = codeNode ? codeNode.textContent : pre.textContent;
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
-      setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">check</span>';
+      btn.setAttribute('aria-label', 'Copied');
+      setTimeout(function() {
+        btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">content_copy</span>';
+        btn.setAttribute('aria-label', 'Copy code');
+      }, 2000);
     }).catch(function() {
-      btn.textContent = 'Failed';
-      setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">close</span>';
+      btn.setAttribute('aria-label', 'Copy failed');
+      setTimeout(function() {
+        btn.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">content_copy</span>';
+        btn.setAttribute('aria-label', 'Copy code');
+      }, 2000);
     });
   });
   wrapper.appendChild(btn);
