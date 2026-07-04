@@ -1,9 +1,9 @@
 # ProjectPage Generator
 
 Generates self-contained GitHub Pages HTML for project showcase pages from
-TOML data + a Jinja2 template. The template uses a Dracula theme with JetBrains
-Mono font, sidebar navigation, responsive layout — same style used across all
-my project pages.
+TOML data + a Jinja2 template. The template uses a Dracula dark theme (default)
+with an Alucard light theme, JetBrains Mono font, sidebar navigation,
+responsive layout, and scroll-reveal animations.
 
 ## Usage
 

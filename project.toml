@@ -1,7 +1,7 @@
 [project]
 name = "ProjectSite"
 tagline = "Static site generator for GitHub Pages"
-subtitle = "Generates self-contained Dracula-themed HTML project pages from TOML data plus a Jinja2 template. Batch-generates all projects from one command."
+subtitle = "Generates self-contained Dracula dark + Alucard light themed HTML project pages from TOML data plus a Jinja2 template. Batch-generates all projects from one command."
 description = "Static site generator for GitHub project pages"
 github_url = "https://github.com/yuzu-octopus/ProjectSite"
 page_url = "https://yuzu-octopus.github.io/ProjectSite/"
