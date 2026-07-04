@@ -572,21 +572,23 @@
       padding: 0 0 0 100px;
       position: relative;
     }
-    .timeline::before {
+    .timeline-item {
+      display: flex;
+      gap: 0;
+      position: relative;
+    }
+    .timeline-item::before {
       content: '';
       position: absolute;
-      left: calc(100px + 72px + 8px);
+      left: 80px;
       top: 0;
       bottom: 0;
       width: 2px;
       background: var(--muted);
       z-index: 0;
     }
-    .timeline-item {
-      display: flex;
-      gap: 0;
-      position: relative;
-    }
+    .timeline-item:first-child::before { top: 11px; }
+    .timeline-item:last-child::before { bottom: 11px; }
     .timeline-date-col {
       width: 72px;
       text-align: right;
