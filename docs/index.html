@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="ProjectSite | Static site generator for GitHub Pages">
   <meta name="twitter:description" content="Static site generator for GitHub project pages">
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%23bd93f9%27%20d%3D%27M10%2C20V14H14V20H19V12H22L12%2C3L2%2C12H5V20H10Z%27%2F%3E%3C%2Fsvg%3E" id="favicon">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%23bd93f9%27%20d%3D%27M14.6%2C16.6L19.2%2C12L14.6%2C7.4L16%2C6L22%2C12L16%2C18L14.6%2C16.6M9.4%2C16.6L4.8%2C12L9.4%2C7.4L8%2C6L2%2C12L8%2C18L9.4%2C16.6Z%27%2F%3E%3C%2Fsvg%3E" id="favicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -32,7 +32,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js" defer></script>
@@ -709,7 +708,7 @@
       document.documentElement.setAttribute('data-theme', saved);
       if (saved === 'light') {
         document.getElementById('favicon').href =
-          'data:image/svg+xml,' + encodeURIComponent('\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e');
+          'data:image/svg+xml,' + encodeURIComponent('\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z\u0027/\u003e\u003c/svg\u003e');
       }
     }
   })();
@@ -724,8 +723,8 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-  <i class="mdi mdi-dark-mode icon-moon" aria-hidden="true"></i>
-  <i class="mdi mdi-light-mode icon-sun" aria-hidden="true"></i>
+  <i class="mdi mdi-brightness-4 icon-moon" aria-hidden="true"></i>
+  <i class="mdi mdi-brightness-6 icon-sun" aria-hidden="true"></i>
 </button>
 
 <aside class="sidebar" id="sidebar">
@@ -947,7 +946,7 @@ function toggleTheme() {
     next === 'light' ? '#FFFBEB' : '#282a36';
   document.getElementById('favicon').href =
     'data:image/svg+xml,' + encodeURIComponent(
-      next === 'light' ? '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e' : '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23bd93f9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e'
+      next === 'light' ? '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z\u0027/\u003e\u003c/svg\u003e' : '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23bd93f9\u0027 d=\u0027M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z\u0027/\u003e\u003c/svg\u003e'
     );
 }
 
