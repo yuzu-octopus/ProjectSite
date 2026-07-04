@@ -20,7 +20,7 @@
   {% if project.og_image %}
   <meta name="twitter:image" content="{{ project.page_url }}{{ project.og_image }}">
   {% endif %}
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{{ project.favicon_data | urlencode }}">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{{ project.favicon_dark | urlencode }}" id="favicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -144,6 +144,7 @@
 
     .sidebar-nav {
       flex: 1;
+      padding-top: 4px;
     }
 
     .sidebar-nav ul {
@@ -258,8 +259,13 @@
       padding: 8px 16px;
       font-size: 0.8rem;
       border: 1px solid var(--muted);
-      border-radius: 4px;
+      border-radius: 8px;
       transition: all 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .btn-primary {
@@ -271,17 +277,6 @@
     .btn-primary:hover {
       background: color-mix(in oklch, var(--purple), black 15%);
       border-color: color-mix(in oklch, var(--purple), black 15%);
-      color: var(--fg);
-    }
-
-    .btn-outline {
-      color: var(--cyan);
-      border-color: var(--cyan);
-    }
-
-    .btn-outline:hover {
-      color: var(--pink);
-      border-color: var(--pink);
     }
 
     .grid {
@@ -296,29 +291,12 @@
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      opacity: 0;
-      transition: opacity 0.25s;
+      transition: transform 0.25s, box-shadow 0.25s;
     }
 
     .card:hover {
-      border-color: var(--purple);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    }
-
-    .card:hover::before {
-      opacity: 1;
     }
 
     .card h3 {
@@ -334,7 +312,8 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       background: var(--panel);
       border: 1px solid var(--muted);
       border-radius: 8px;
@@ -364,7 +343,7 @@
     pre {
       background: var(--bg);
       border: 1px solid var(--muted);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px;
       overflow-x: auto;
     }
@@ -449,16 +428,13 @@
       background: var(--panel);
       border: 1px solid var(--muted);
       padding: 6px 12px;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 0.75rem;
       color: var(--fg);
+      transition: all 0.25s;
     }
 
     .stack .badge strong { color: var(--purple); }
-
-    .stack .badge {
-      transition: all 0.25s;
-    }
 
     .stack .badge:hover {
       border-color: var(--purple);
@@ -578,7 +554,7 @@
       padding: 10px 12px;
       min-width: 44px;
       min-height: 44px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -608,6 +584,10 @@
     var saved = localStorage.getItem('theme');
     if (saved) {
       document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'light') {
+        document.getElementById('favicon').href =
+          'data:image/svg+xml,' + encodeURIComponent({{ project.favicon_light | tojson }});
+      }
     }
   })();
   </script>
@@ -677,9 +657,6 @@
       <p class="subtitle">{{ project.subtitle }}</p>
       <div class="cta">
         <a href="{{ project.github_url }}" class="btn btn-primary">View on GitHub</a>
-        {% if project.quickstart_url %}
-        <a href="{{ project.quickstart_url }}" class="btn btn-outline">Quick Start</a>
-        {% endif %}
       </div>
     </div>
   </section>
@@ -793,6 +770,10 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
   document.querySelector('meta[name="theme-color"]').content =
     next === 'light' ? '#FFFBEB' : '#282a36';
+  document.getElementById('favicon').href =
+    'data:image/svg+xml,' + encodeURIComponent(
+      next === 'light' ? {{ project.favicon_light | tojson }} : {{ project.favicon_dark | tojson }}
+    );
 }
 
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

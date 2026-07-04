@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="ProjectSite | Static site generator for GitHub Pages">
   <meta name="twitter:description" content="Static site generator for GitHub project pages">
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2344475a%27/%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%279%27%20fill%3D%27%23bd93f9%27/%3E%3Cpath%20d%3D%27M13%2016h6M16%2013v6%27%20stroke%3D%27%23282a36%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2344475a%27/%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%279%27%20fill%3D%27%23bd93f9%27/%3E%3Cpath%20d%3D%27M13%2016h6M16%2013v6%27%20stroke%3D%27%23282a36%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E" id="favicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -140,6 +140,7 @@
 
     .sidebar-nav {
       flex: 1;
+      padding-top: 4px;
     }
 
     .sidebar-nav ul {
@@ -254,8 +255,13 @@
       padding: 8px 16px;
       font-size: 0.8rem;
       border: 1px solid var(--muted);
-      border-radius: 4px;
+      border-radius: 8px;
       transition: all 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .btn-primary {
@@ -267,17 +273,6 @@
     .btn-primary:hover {
       background: color-mix(in oklch, var(--purple), black 15%);
       border-color: color-mix(in oklch, var(--purple), black 15%);
-      color: var(--fg);
-    }
-
-    .btn-outline {
-      color: var(--cyan);
-      border-color: var(--cyan);
-    }
-
-    .btn-outline:hover {
-      color: var(--pink);
-      border-color: var(--pink);
     }
 
     .grid {
@@ -292,29 +287,12 @@
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      opacity: 0;
-      transition: opacity 0.25s;
+      transition: transform 0.25s, box-shadow 0.25s;
     }
 
     .card:hover {
-      border-color: var(--purple);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    }
-
-    .card:hover::before {
-      opacity: 1;
     }
 
     .card h3 {
@@ -330,7 +308,8 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       background: var(--panel);
       border: 1px solid var(--muted);
       border-radius: 8px;
@@ -360,7 +339,7 @@
     pre {
       background: var(--bg);
       border: 1px solid var(--muted);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px;
       overflow-x: auto;
     }
@@ -445,16 +424,13 @@
       background: var(--panel);
       border: 1px solid var(--muted);
       padding: 6px 12px;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 0.75rem;
       color: var(--fg);
+      transition: all 0.25s;
     }
 
     .stack .badge strong { color: var(--purple); }
-
-    .stack .badge {
-      transition: all 0.25s;
-    }
 
     .stack .badge:hover {
       border-color: var(--purple);
@@ -574,7 +550,7 @@
       padding: 10px 12px;
       min-width: 44px;
       min-height: 44px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -604,6 +580,10 @@
     var saved = localStorage.getItem('theme');
     if (saved) {
       document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'light') {
+        document.getElementById('favicon').href =
+          'data:image/svg+xml,' + encodeURIComponent("\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#E2DECA\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#644AC9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#1F1F1F\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e");
+      }
     }
   })();
   </script>
@@ -623,7 +603,7 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="logo"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="14" fill="#44475a"/><rect x="14" y="16" width="36" height="32" rx="4" fill="none" stroke="#50fa7b" stroke-width="2.5"/><path d="M24 26h16" stroke="#bd93f9" stroke-width="2" stroke-linecap="round"/><path d="M24 32h12" stroke="#6272a4" stroke-width="2" stroke-linecap="round"/><path d="M24 38h8" stroke="#6272a4" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="16" r="9" fill="#bd93f9"/><path d="M45 16h6M48 13v6" stroke="#282a36" stroke-width="2" stroke-linecap="round"/></svg></div>
+    <div class="logo"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="14" fill="var(--panel)"/><rect x="14" y="16" width="36" height="32" rx="4" fill="none" stroke="var(--green)" stroke-width="2.5"/><path d="M24 26h16" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"/><path d="M24 32h12" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/><path d="M24 38h8" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="16" r="9" fill="var(--purple)"/><path d="M45 16h6M48 13v6" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"/></svg></div>
     <div class="name">ProjectSite</div>
     <div class="tagline">TOML · Jinja2 · Python</div>
   </div>
@@ -641,6 +621,12 @@
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
 
 </span> Features</a></li>
+      
+      <li><a href="#ci"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>
+
+</span> CI Workflow</a></li>
       
       <li><a href="#usage"><span class="icon">
 
@@ -673,9 +659,6 @@
       <p class="subtitle">Generates self-contained Dracula dark + Alucard light themed HTML project pages from TOML data plus a Jinja2 template. Batch-generates all projects from one command.</p>
       <div class="cta">
         <a href="https://github.com/yuzu-octopus/ProjectSite" class="btn btn-primary">View on GitHub</a>
-        
-        <a href="#usage" class="btn btn-outline">Quick Start</a>
-        
       </div>
     </div>
   </section>
@@ -711,6 +694,54 @@
         </div>
         
       </div>
+
+      
+    </div>
+  </section>
+  
+  <section id="ci" class="reveal">
+    <div class="container">
+      
+      <h2>CI Workflow</h2>
+      
+
+      
+      <pre><code>name: Deploy project page
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - &#34;project.toml&#34;
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: &#34;3.11&#34;
+      - name: Checkout generator
+        uses: actions/checkout@v4
+        with:
+          repository: yuzu-octopus/ProjectSite
+          path: generator
+      - name: Generate page
+        run: |
+          pip install jinja2
+          python generator/genpage.py --input project.toml --output docs/index.html
+      - name: Commit generated page
+        run: |
+          git config user.name &#34;github-actions[bot]&#34;
+          git config user.email &#34;github-actions[bot]@users.noreply.github.com&#34;
+          git add docs/
+          git diff --cached --quiet || git commit -m &#34;ci: regenerate project page [skip ci]&#34;
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
+</code></pre>
 
       
     </div>
@@ -787,6 +818,10 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
   document.querySelector('meta[name="theme-color"]').content =
     next === 'light' ? '#FFFBEB' : '#282a36';
+  document.getElementById('favicon').href =
+    'data:image/svg+xml,' + encodeURIComponent(
+      next === 'light' ? "\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#E2DECA\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#644AC9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#1F1F1F\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e" : "\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#44475a\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#bd93f9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#282a36\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e"
+    );
 }
 
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
