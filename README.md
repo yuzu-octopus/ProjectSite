@@ -31,8 +31,6 @@ tables and an array of sections.
 | `github_url` | string | Link to the GitHub repo |
 | `page_url` | string | URL where the page will be served |
 | `logo_svg` | string | Inline SVG for the sidebar logo (64×64). Use CSS variables for theme support. |
-| `favicon_dark` | string | Inline SVG for the dark theme favicon (32×32) |
-| `favicon_light` | string | Inline SVG for the light theme favicon (32×32) |
 | `og_image` | string | Optional — filename of an OG image (e.g. `"og-image.png"`) |
 
 ### `[brand]` — required

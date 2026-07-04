@@ -17,6 +17,10 @@ def load_toml(path: Path) -> dict:
         return tomllib.load(f)
 
 
+KNOWN_SECTION_TYPES = {
+    "features", "table", "steps", "terms", "code_block", "stack", "text", "links", "custom",
+}
+
 REQUIRED_TOP_KEYS = {"project", "brand", "sections"}
 REQUIRED_PROJECT_KEYS = {
     "name", "tagline", "subtitle", "description",
@@ -29,13 +33,34 @@ def validate(data: dict) -> None:
     if missing:
         msg = f"Missing top-level keys: {', '.join(sorted(missing))}"
         raise SystemExit(msg)
+
+    project = data.get("project", {})
     for key in REQUIRED_PROJECT_KEYS:
-        if key not in data["project"]:
+        if key not in project:
             msg = f"Missing project.{key}"
             raise SystemExit(msg)
-    if not isinstance(data["sections"], list) or not data["sections"]:
+
+    brand = data.get("brand", {})
+    if "tagline" not in brand:
+        msg = "Missing brand.tagline"
+        raise SystemExit(msg)
+
+    sections = data.get("sections", [])
+    if not isinstance(sections, list) or not sections:
         msg = "sections must be a non-empty array"
         raise SystemExit(msg)
+
+    for i, section in enumerate(sections):
+        for key in ("id", "type", "icon"):
+            if key not in section:
+                msg = f"sections[{i}] missing required field '{key}'"
+                raise SystemExit(msg)
+
+        st = section["type"]
+        if st not in KNOWN_SECTION_TYPES:
+            valid = ", ".join(sorted(KNOWN_SECTION_TYPES))
+            msg = f"sections[{i}] unknown type '{st}'. Valid types: {valid}"
+            raise SystemExit(msg)
 
 
 def render(template_name: str, data: dict) -> str:
@@ -65,7 +90,12 @@ def batch(input_dir: Path, output_dir: Path) -> None:
     for toml_path in toml_files:
         project_dir = output_dir / toml_path.stem
         output_path = project_dir / "index.html"
-        generate_one(toml_path, output_path)
+        try:
+            generate_one(toml_path, output_path)
+        except SystemExit as e:
+            print(f"  ! {toml_path.name}: {e.code or 'error'}")
+        except Exception as e:
+            print(f"  ! {toml_path.name}: {e}")
 
 
 def main() -> None:
