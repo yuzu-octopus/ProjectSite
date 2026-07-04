@@ -185,6 +185,67 @@ body = """
 """
 ```
 
+#### `type = "notice"` — themed callout box
+
+Wraps body HTML in a themed callout. Supports `notice_type`: `info` (default), `warning`, `success`, `error`.
+
+```toml
+[[sections]]
+id = "notice"
+type = "notice"
+title = "Hardware Note"
+icon = "info"
+notice_type = "warning"
+body = """
+<p>This requires a GPU with at least 8GB VRAM.</p>
+"""
+```
+
+#### `type = "timeline"` — vertical connector timeline
+
+Items appear as a vertical list with connector dots and a line on the left. Optional `date` field.
+
+```toml
+[[sections]]
+id = "milestones"
+type = "timeline"
+title = "Milestones"
+icon = "layers"
+
+[[sections.items]]
+title = "Phase 1"
+body = "Initial implementation"
+date = "Jan 2026"
+
+[[sections.items]]
+title = "Phase 2"
+body = "Optimization"
+```
+
+#### `type = "workflow"` — horizontal scroll-snap cards
+
+Items display as numbered cards in a horizontally scrollable row with CSS scroll-snap. Best for sequential steps or pipeline stages.
+
+```toml
+[[sections]]
+id = "pipeline"
+type = "workflow"
+title = "Pipeline"
+icon = "layers"
+
+[[sections.items]]
+title = "Data"
+body = "Collect and clean data"
+
+[[sections.items]]
+title = "Train"
+body = "Train the model"
+
+[[sections.items]]
+title = "Evaluate"
+body = "Benchmark results"
+```
+
 #### `type = "code_block"` — pre-formatted code with syntax highlighting
 
 ```toml
