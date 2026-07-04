@@ -866,6 +866,9 @@
     } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
       document.documentElement.setAttribute('data-theme', 'light');
     }
+    var current = document.documentElement.getAttribute('data-theme') || 'dark';
+    document.querySelector('meta[name="theme-color"]').content =
+      current === 'light' ? '#FFFBEB' : '#282a36';
   })();
   </script>
   <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
@@ -1238,7 +1241,9 @@ document.querySelectorAll('pre').forEach(function(pre) {
   btn.className = 'copy-btn';
   btn.textContent = 'Copy';
   btn.addEventListener('click', function() {
-    navigator.clipboard.writeText(pre.querySelector('code').textContent).then(function() {
+    var codeNode = pre.querySelector('code');
+    var text = codeNode ? codeNode.textContent : pre.textContent;
+    navigator.clipboard.writeText(text).then(function() {
       btn.textContent = 'Copied!';
       setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
     }).catch(function() {
@@ -1252,7 +1257,17 @@ document.querySelectorAll('pre').forEach(function(pre) {
 function updateFavicon() {
   var logo = document.querySelector('.sidebar-brand .logo');
   if (!logo) return;
-  var svg = logo.querySelector('svg').cloneNode(true);
+  var svgEl = logo.querySelector('svg');
+  if (!svgEl) return;
+  var svg = svgEl.cloneNode(true);
+  ['fill', 'stroke'].forEach(function(attr) {
+    var val = svg.getAttribute(attr);
+    if (val && val.startsWith('var(--')) {
+      var name = val.slice(4, -1);
+      var resolved = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      if (resolved) svg.setAttribute(attr, resolved);
+    }
+  });
   var walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT);
   while (walker.nextNode()) {
     var el = walker.currentNode;

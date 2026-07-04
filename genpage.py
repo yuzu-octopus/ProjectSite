@@ -2,6 +2,7 @@
 """Generate project page HTML from TOML data + Jinja2 template."""
 
 import argparse
+import re
 import tomllib
 from datetime import UTC, datetime
 from pathlib import Path
@@ -31,6 +32,7 @@ REQUIRED_PROJECT_KEYS = {
 
 _ITEMS_TYPES = {"features", "steps", "stack", "links", "timeline", "workflow", "terms"}
 _BODY_TYPES = {"text", "custom", "notice"}
+_VALID_NOTICE_TYPES = {"info", "warning", "success", "error"}
 
 
 _ITEM_KEYS = {
@@ -70,10 +72,18 @@ def _validate_section_fields(section: dict, index: int, st: str) -> None:
         if "rows" not in section or not isinstance(section["rows"], list):
             msg = f"sections[{index}] type='table' requires 'rows' (list)"
             raise SystemExit(msg)
+        for j, row in enumerate(section["rows"]):
+            if not isinstance(row, dict) or "cells" not in row or not isinstance(row["cells"], list):
+                msg = f"sections[{index}].rows[{j}] requires 'cells' (list)"
+                raise SystemExit(msg)
     elif st in _BODY_TYPES:
         if "body" not in section or not isinstance(section["body"], str):
             msg = f"sections[{index}] type='{st}' requires 'body' (string)"
             raise SystemExit(msg)
+        if st == "notice" and "notice_type" in section and section["notice_type"] not in _VALID_NOTICE_TYPES:
+                valid = ", ".join(sorted(_VALID_NOTICE_TYPES))
+                msg = f"sections[{index}] notice_type must be one of: {valid}"
+                raise SystemExit(msg)
 
 
 def validate(data: dict) -> None:
@@ -103,6 +113,11 @@ def validate(data: dict) -> None:
             if key not in section:
                 msg = f"sections[{i}] missing required field '{key}'"
                 raise SystemExit(msg)
+
+        sid = section["id"]
+        if not re.fullmatch(r"[a-zA-Z0-9_-]+", sid):
+            msg = f"sections[{i}] id must match [a-zA-Z0-9_-]+, got '{sid}'"
+            raise SystemExit(msg)
 
         st = section["type"]
         if st not in KNOWN_SECTION_TYPES:

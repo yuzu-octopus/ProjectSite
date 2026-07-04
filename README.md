@@ -48,7 +48,7 @@ TOML determines page flow. Required fields across all sections:
 |-------|------|-------------|
 | `id` | string | URL anchor and sidebar link target (e.g. `"features"`) |
 | `type` | string | One of the section types below |
-| `title` | string | Section heading and sidebar label |
+| `title` | string | Optional — section heading and sidebar label. Omit to hide from sidebar nav. |
 | `icon` | string | Named icon for sidebar — see [Icons](#icons) |
 
 Additional fields depend on `type`:

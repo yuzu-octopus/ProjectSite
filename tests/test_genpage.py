@@ -129,6 +129,16 @@ class TestValidatePerType:
         with pytest.raises(SystemExit, match="requires 'rows'"):
             validate(_make_data(sections=[sec]))
 
+    def test_table_row_requires_cells(self):
+        sec = {"id": "x", "type": "table", "icon": "grid", "headers": ["A"], "rows": ["bad"]}
+        with pytest.raises(SystemExit, match="requires 'cells'"):
+            validate(_make_data(sections=[sec]))
+
+    def test_notice_type_invalid(self):
+        sec = {"id": "x", "type": "notice", "icon": "info", "notice_type": "banana", "body": "hi"}
+        with pytest.raises(SystemExit, match="notice_type"):
+            validate(_make_data(sections=[sec]))
+
     def test_terms_requires_term_and_definition(self):
         sec = {
             "id": "x",
@@ -264,13 +274,8 @@ class TestSectionTypesMatchTemplate:
 
     def test_types_match_template(self):
         template_text = (HERE / TEMPLATE).read_text()
-        # Find first branch: {% if section.type == "X" %}
-        first = re.search(r'\{%\s*if section\.type\s*==\s*"(\w+)"', template_text)
-        # Find elif branches: {% elif section.type == "X" %}
-        elifs = re.findall(r'\{%\s*elif section\.type\s*==\s*"(\w+)"', template_text)
-        template_types = set(elifs)
-        if first:
-            template_types.add(first.group(1))
+        pattern = r'\{%[-+ ]*\s*(?:el)?if\s+section\.type\s*==\s*["\'](\w+)["\']'
+        template_types = set(re.findall(pattern, template_text))
         assert template_types == KNOWN_SECTION_TYPES, (
             f"Template types {template_types} != KNOWN_SECTION_TYPES {KNOWN_SECTION_TYPES}\n"
             f"Missing from template: {KNOWN_SECTION_TYPES - template_types}\n"
