@@ -4,5 +4,9 @@ __pycache__/
 .ruff_cache/
 .pytest_cache/
 .DS_Store
+.mimocode/
 .playwright-mcp/
+fix-plan.md
+tests/
+live-page.png
 site-snapshot.txt
