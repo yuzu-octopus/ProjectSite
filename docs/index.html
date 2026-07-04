@@ -1347,17 +1347,24 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 var sections = document.querySelectorAll('section[id]');
 var navLinks = document.querySelectorAll('.sidebar-nav a');
 var activeId = null;
+// Track all sections' visibility so overlapping/tall sections don't break scroll-spy.
+// IntersectionObserver callbacks only report entries whose status *changed*, so we
+// maintain a full Map and recalculate the topmost visible section on every event.
+var visibleSections = new Map();
 var sectionObserver = new IntersectionObserver(function(entries) {
-  var best = null;
   entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      if (!best || entry.boundingClientRect.top < best.boundingClientRect.top) {
-        best = entry;
+    visibleSections.set(entry.target, entry.isIntersecting);
+  });
+  var best = null;
+  visibleSections.forEach(function(isVisible, el) {
+    if (isVisible) {
+      if (!best || el.getBoundingClientRect().top < best.getBoundingClientRect().top) {
+        best = el;
       }
     }
   });
   if (best) {
-    var id = best.target.getAttribute('id');
+    var id = best.getAttribute('id');
     if (id !== activeId) {
       activeId = id;
       navLinks.forEach(function(link) {

@@ -159,11 +159,6 @@ def _resolve_svg_vars(svg: str) -> str:
     return svg
 
 
-def _escape_xml(text: str) -> str:
-    """Escape text for XML/SVG embedding."""
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
-
-
 def _extract_logo_inner(logo_svg: str) -> tuple[str, str]:
     """Resolve colors and extract inner content + viewBox from a logo SVG.
 
@@ -182,12 +177,74 @@ def _extract_logo_inner(logo_svg: str) -> tuple[str, str]:
     return inner, viewBox
 
 
+def _find_jetbrains_font(weight: str = "Regular") -> str | None:
+    """Find a JetBrains Mono TTF file on the system."""
+    search_dirs = [
+        Path.home() / "Library" / "Fonts",  # macOS
+        Path("/usr/share/fonts"),
+        Path("/usr/local/share/fonts"),
+    ]
+    patterns = [
+        f"JetBrainsMono-{weight}.ttf",
+        f"JetBrainsMono{weight}.ttf",
+        "JetBrainsMono*.ttf",
+    ]
+    for base in search_dirs:
+        if not base.is_dir():
+            continue
+        for pat in patterns:
+            matches = sorted(base.glob(pat))
+            if matches:
+                return str(matches[0])
+    return None
+
+
+def _wrap_text(draw, text: str, font, max_width: int) -> list[str]:
+    """Wrap text into lines that fit within max_width pixels using word boundaries."""
+    words = text.split()
+    lines: list[str] = []
+    current: list[str] = []
+    for word in words:
+        test_line = " ".join([*current, word])
+        bbox = draw.textbbox((0, 0), test_line, font=font)
+        if bbox[2] - bbox[0] <= max_width:
+            current.append(word)
+        else:
+            if current:
+                lines.append(" ".join(current))
+            current = [word]
+    if current:
+        lines.append(" ".join(current))
+    return lines or [text]
+
+
+def _truncate_text(draw, text: str, font, max_width: int) -> str:
+    """Truncate text with ellipsis to fit within max_width pixels."""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    if bbox[2] - bbox[0] <= max_width:
+        return text
+    while len(text) > 1:
+        text = text[:-1]
+        bbox = draw.textbbox((0, 0), text + "...", font=font)
+        if bbox[2] - bbox[0] <= max_width:
+            return text + "..."
+    return text[:1] + "..."
+
+
 def generate_og_image(project: dict, output_path: Path) -> None:
-    """Generate a 1200x630 OG preview PNG with Dracula theme (logo + title)."""
+    """Generate a 1200x630 OG preview PNG using Pillow + cairosvg for the logo.
+
+    Layout: logo on the left (vertically centered), project name / tagline /
+    subtitle on the right with proper text wrapping and Dracula theme colors.
+    Uses the system JetBrains Mono font if available, falls back to default.
+    """
     try:
+        from io import BytesIO
+
         import cairosvg
-    except (ImportError, OSError):
-        print("  ! cairosvg not available, skipping OG image")
+        from PIL import Image, ImageDraw, ImageFont
+    except (ImportError, OSError) as e:
+        print(f"  ! Dependencies not available, skipping OG image: {e}")
         return
 
     name = project.get("name", "")
@@ -195,31 +252,97 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     subtitle = project.get("subtitle", "")
     logo_svg = project.get("logo_svg", "")
 
-    logo_inner, viewBox = _extract_logo_inner(logo_svg)
+    # Dracula dark theme colors
+    BG = "#282a36"
+    PURPLE = "#bd93f9"
+    FG = "#f8f8f2"
+    MUTED = "#8ca0d7"
 
-    # Truncate long subtitle to avoid overflow
-    if len(subtitle) > 120:
-        subtitle = subtitle[:117] + "..."
-
-    og_svg = f"""<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#282a36" rx="16"/>
-  <svg x="80" y="175" width="240" height="240" viewBox="{viewBox}">
-{logo_inner}
-  </svg>
-  <text x="360" y="245" font-family="JetBrains Mono,monospace" font-size="52" font-weight="700" fill="#bd93f9">{_escape_xml(name)}</text>
-  <text x="360" y="315" font-family="JetBrains Mono,monospace" font-size="28" fill="#f8f8f2">{_escape_xml(tagline)}</text>
-  <text x="360" y="365" font-family="JetBrains Mono,monospace" font-size="20" fill="#6272a4">{_escape_xml(subtitle)}</text>
-  <rect x="360" y="395" width="80" height="4" fill="#bd93f9" rx="2"/>
-</svg>"""
+    # Find fonts — prefer JetBrains Mono, fall back to default
+    bold_path = _find_jetbrains_font("Bold") or _find_jetbrains_font("Regular")
+    regular_path = _find_jetbrains_font("Regular") or _find_jetbrains_font("Medium")
 
     try:
-        cairosvg.svg2png(
-            bytestring=og_svg.encode("utf-8"),
-            write_to=str(output_path),
-            output_width=1200,
-            output_height=630,
+        font_name = ImageFont.truetype(bold_path or "", 48) if bold_path else ImageFont.load_default()
+    except Exception:
+        font_name = ImageFont.load_default()
+    try:
+        font_tagline = ImageFont.truetype(regular_path or "", 26) if regular_path else ImageFont.load_default()
+    except Exception:
+        font_tagline = ImageFont.load_default()
+    try:
+        font_subtitle = ImageFont.truetype(regular_path or "", 18) if regular_path else ImageFont.load_default()
+    except Exception:
+        font_subtitle = ImageFont.load_default()
+
+    # Create canvas
+    img = Image.new("RGB", (1200, 630), BG)
+    draw = ImageDraw.Draw(img)
+
+    # Render logo from SVG via cairosvg → paste as RGBA
+    logo_size = 200
+    logo_x = 80
+    logo_y = (630 - logo_size) // 2
+    try:
+        logo_inner, viewBox = _extract_logo_inner(logo_svg)
+        logo_svg_full = (
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewBox}">'
+            f"{logo_inner}</svg>"
         )
+        logo_png = cairosvg.svg2png(bytestring=logo_svg_full.encode("utf-8"))
+        if logo_png:
+            logo_img = Image.open(BytesIO(logo_png)).convert("RGBA")
+            logo_img = logo_img.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
+            img.paste(logo_img, (logo_x, logo_y), logo_img)
+    except Exception:
+        pass  # Logo is optional — skip if rendering fails
+
+    # Text area: starts after logo + gap, max width to right edge with margin
+    text_x = logo_x + logo_size + 40  # 320
+    max_text_width = 1200 - text_x - 80  # 800px
+
+    # 1. Project name (large, bold, purple) — truncate if too long
+    name_display = _truncate_text(draw, name, font_name, max_text_width)
+    name_bbox = draw.textbbox((0, 0), name_display, font=font_name)
+    name_h = name_bbox[3] - name_bbox[1]
+
+    # 2. Tagline (medium, white)
+    tagline_display = _truncate_text(draw, tagline, font_tagline, max_text_width)
+    tagline_bbox = draw.textbbox((0, 0), tagline_display, font=font_tagline)
+    tagline_h = tagline_bbox[3] - tagline_bbox[1]
+
+    # Calculate vertical centering for the text block
+    subtitle_lines = _wrap_text(draw, subtitle, font_subtitle, max_text_width)
+    if len(subtitle_lines) > 4:
+        subtitle_lines = subtitle_lines[:4]
+        subtitle_lines[-1] = subtitle_lines[-1].rstrip(".") + "..."
+    subtitle_h = len(subtitle_lines) * 26
+
+    accent_h = 4
+    gap1 = 16  # gap between name and tagline
+    gap2 = 14  # gap between tagline and subtitle
+    gap3 = 20  # gap between subtitle and accent
+
+    total_text_h = name_h + gap1 + tagline_h + gap2 + subtitle_h + gap3 + accent_h
+    text_y_start = (630 - total_text_h) // 2
+
+    y = text_y_start
+    draw.text((text_x, y), name_display, fill=PURPLE, font=font_name)
+    y += name_h + gap1
+    draw.text((text_x, y), tagline_display, fill=FG, font=font_tagline)
+    y += tagline_h + gap2
+    # Track the last subtitle line's actual bottom position for accent placement
+    last_subtitle_bottom = y
+    for line in subtitle_lines:
+        draw.text((text_x, y), line, fill=MUTED, font=font_subtitle)
+        line_bbox = draw.textbbox((text_x, y), line, font=font_subtitle)
+        last_subtitle_bottom = line_bbox[3]
+        y += 26
+    y = last_subtitle_bottom + gap3
+    draw.rectangle([text_x, y, text_x + 100, y + accent_h], fill=PURPLE)
+
+    try:
+        img.save(output_path, "PNG")
     except Exception as e:
         print(f"  ! OG image generation failed: {e}")
 
