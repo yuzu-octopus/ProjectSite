@@ -722,7 +722,32 @@
 <body>
 
 {% macro icon(name) %}
-{% set mdi_names = {"home": "home", "grid": "view-grid", "info": "information", "chip": "chip", "layers": "layers", "document": "file-document", "play": "play", "gear": "cog", "link": "link"} %}
+{% set mdi_names = {
+  "home": "home",
+  "grid": "view-grid",
+  "info": "information",
+  "chip": "chip",
+  "layers": "layers",
+  "document": "file-document",
+  "play": "play",
+  "gear": "cog",
+  "link": "link",
+  "star": "star",
+  "heart": "heart",
+  "check": "check-circle",
+  "alert": "alert",
+  "download": "download",
+  "copy": "content-copy",
+  "share": "share-variant",
+  "bookmark": "bookmark",
+  "calendar": "calendar-clock",
+  "database": "database",
+  "cloud": "cloud",
+  "lock": "lock",
+  "bell": "bell",
+  "code": "code-tags",
+  "console": "console"
+} %}
 <i class="mdi mdi-{{ mdi_names.get(name, name) }}" aria-hidden="true"></i>
 {% endmacro %}
 
