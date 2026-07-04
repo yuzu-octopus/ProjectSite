@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="ProjectSite | Static site generator for GitHub Pages">
   <meta name="twitter:description" content="Static site generator for GitHub project pages">
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2344475a%27/%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2716%27%20r%3D%279%27%20fill%3D%27%23bd93f9%27/%3E%3Cpath%20d%3D%27M13%2016h6M16%2013v6%27%20stroke%3D%27%23282a36%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E" id="favicon">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%23bd93f9%27%20d%3D%27M10%2C20V14H14V20H19V12H22L12%2C3L2%2C12H5V20H10Z%27%2F%3E%3C%2Fsvg%3E" id="favicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -29,6 +29,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-diff.min.js" defer></script>
   <style>
     :root {
       color-scheme: dark;
@@ -82,15 +96,18 @@
       line-height: 1.5;
     }
 
-    a:not(.btn):not(.link-card) { color: var(--cyan); text-decoration: none; }
-    a:not(.btn):not(.link-card):hover { color: var(--pink); }
+    a { text-decoration: none; }
+    .main a { color: var(--cyan); }
+    .main a:hover { color: var(--pink); }
+    .sidebar-footer a { color: var(--purple); }
+    .sidebar-footer a:hover { color: var(--pink); }
     ::selection { background: var(--purple); color: var(--bg); }
 
     a:focus-visible,
     .btn:focus-visible,
     .mobile-toggle:focus-visible,
     .theme-toggle:focus-visible {
-      outline: 2px solid var(--pink);
+      outline: 2px solid var(--purple);
       outline-offset: 2px;
     }
 
@@ -420,8 +437,8 @@
     }
 
     /* Prism.js Dracula theme override */
-    pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; }
-    code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; }
+    pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; font-family: var(--font); font-size: 0.8rem; line-height: 1.6; }
+    code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; background: none; padding: 0; color: var(--fg); }
     .token.comment { color: var(--muted); }
     .token.keyword { color: var(--pink); }
     .token.string { color: var(--yellow); }
@@ -692,7 +709,7 @@
       document.documentElement.setAttribute('data-theme', saved);
       if (saved === 'light') {
         document.getElementById('favicon').href =
-          'data:image/svg+xml,' + encodeURIComponent("\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#E2DECA\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#644AC9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#1F1F1F\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e");
+          'data:image/svg+xml,' + encodeURIComponent('\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e');
       }
     }
   })();
@@ -721,22 +738,27 @@
   <nav class="sidebar-nav" aria-label="Main navigation">
     <ul>
       <li><a href="#hero"><span class="icon">
+
 <i class="mdi mdi-home" aria-hidden="true"></i>
 </span> Home</a></li>
       
       <li><a href="#features"><span class="icon">
-<i class="mdi mdi-grid" aria-hidden="true"></i>
+
+<i class="mdi mdi-view-grid" aria-hidden="true"></i>
 </span> Features</a></li>
       
       <li><a href="#ci"><span class="icon">
-<i class="mdi mdi-gear" aria-hidden="true"></i>
+
+<i class="mdi mdi-cog" aria-hidden="true"></i>
 </span> CI Workflow</a></li>
       
       <li><a href="#usage"><span class="icon">
+
 <i class="mdi mdi-play" aria-hidden="true"></i>
 </span> Usage</a></li>
       
       <li><a href="#stack"><span class="icon">
+
 <i class="mdi mdi-layers" aria-hidden="true"></i>
 </span> Tech Stack</a></li>
       
@@ -925,7 +947,7 @@ function toggleTheme() {
     next === 'light' ? '#FFFBEB' : '#282a36';
   document.getElementById('favicon').href =
     'data:image/svg+xml,' + encodeURIComponent(
-      next === 'light' ? "\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#E2DECA\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#644AC9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#1F1F1F\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e" : "\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 32 32\u0027\u003e\u003crect width=\u002732\u0027 height=\u002732\u0027 rx=\u00276\u0027 fill=\u0027#44475a\u0027/\u003e\u003ccircle cx=\u002716\u0027 cy=\u002716\u0027 r=\u00279\u0027 fill=\u0027#bd93f9\u0027/\u003e\u003cpath d=\u0027M13 16h6M16 13v6\u0027 stroke=\u0027#282a36\u0027 stroke-width=\u00272\u0027 stroke-linecap=\u0027round\u0027/\u003e\u003c/svg\u003e"
+      next === 'light' ? '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e' : '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23bd93f9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e'
     );
 }
 

@@ -20,7 +20,7 @@
   {% if project.og_image %}
   <meta name="twitter:image" content="{{ project.page_url }}{{ project.og_image }}">
   {% endif %}
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{{ project.favicon_dark | urlencode }}" id="favicon">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20fill%3D%27%23bd93f9%27%20d%3D%27M10%2C20V14H14V20H19V12H22L12%2C3L2%2C12H5V20H10Z%27%2F%3E%3C%2Fsvg%3E" id="favicon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -33,6 +33,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markdown.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-diff.min.js" defer></script>
   <style>
     :root {
       color-scheme: dark;
@@ -86,15 +100,18 @@
       line-height: 1.5;
     }
 
-    a:not(.btn):not(.link-card) { color: var(--cyan); text-decoration: none; }
-    a:not(.btn):not(.link-card):hover { color: var(--pink); }
+    a { text-decoration: none; }
+    .main a { color: var(--cyan); }
+    .main a:hover { color: var(--pink); }
+    .sidebar-footer a { color: var(--purple); }
+    .sidebar-footer a:hover { color: var(--pink); }
     ::selection { background: var(--purple); color: var(--bg); }
 
     a:focus-visible,
     .btn:focus-visible,
     .mobile-toggle:focus-visible,
     .theme-toggle:focus-visible {
-      outline: 2px solid var(--pink);
+      outline: 2px solid var(--purple);
       outline-offset: 2px;
     }
 
@@ -424,8 +441,8 @@
     }
 
     /* Prism.js Dracula theme override */
-    pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; }
-    code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; }
+    pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; font-family: var(--font); font-size: 0.8rem; line-height: 1.6; }
+    code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; background: none; padding: 0; color: var(--fg); }
     .token.comment { color: var(--muted); }
     .token.keyword { color: var(--pink); }
     .token.string { color: var(--yellow); }
@@ -696,7 +713,7 @@
       document.documentElement.setAttribute('data-theme', saved);
       if (saved === 'light') {
         document.getElementById('favicon').href =
-          'data:image/svg+xml,' + encodeURIComponent({{ project.favicon_light | tojson }});
+          'data:image/svg+xml,' + encodeURIComponent('\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e');
       }
     }
   })();
@@ -705,7 +722,8 @@
 <body>
 
 {% macro icon(name) %}
-<i class="mdi mdi-{{ name }}" aria-hidden="true"></i>
+{% set mdi_names = {"home": "home", "grid": "view-grid", "info": "information", "chip": "chip", "layers": "layers", "document": "file-document", "play": "play", "gear": "cog", "link": "link"} %}
+<i class="mdi mdi-{{ mdi_names.get(name, name) }}" aria-hidden="true"></i>
 {% endmacro %}
 
 <button class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle mobile menu" aria-controls="sidebar" aria-expanded="false"><i class="mdi mdi-menu" aria-hidden="true"></i></button>
@@ -868,7 +886,7 @@ function toggleTheme() {
     next === 'light' ? '#FFFBEB' : '#282a36';
   document.getElementById('favicon').href =
     'data:image/svg+xml,' + encodeURIComponent(
-      next === 'light' ? {{ project.favicon_light | tojson }} : {{ project.favicon_dark | tojson }}
+      next === 'light' ? '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23644AC9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e' : '\u003csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 24 24\u0027\u003e\u003cpath fill=\u0027%23bd93f9\u0027 d=\u0027M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\u0027/\u003e\u003c/svg\u003e'
     );
 }
 

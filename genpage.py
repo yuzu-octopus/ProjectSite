@@ -20,7 +20,7 @@ def load_toml(path: Path) -> dict:
 REQUIRED_TOP_KEYS = {"project", "brand", "sections"}
 REQUIRED_PROJECT_KEYS = {
     "name", "tagline", "subtitle", "description",
-    "github_url", "page_url", "logo_svg", "favicon_dark", "favicon_light",
+    "github_url", "page_url", "logo_svg",
 }
 
 
