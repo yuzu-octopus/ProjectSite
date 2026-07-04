@@ -411,7 +411,8 @@
 
     /* Prism.js Dracula theme override */
     pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; }
-    code[class*="language-"] { text-shadow: none; }
+    code[class*="language-"] { text-shadow: none; color: var(--fg); }
+    .token { color: var(--fg); }
     .token.comment { color: var(--muted); }
     .token.keyword { color: var(--pink); }
     .token.string { color: var(--yellow); }
@@ -426,6 +427,9 @@
     .token.attr-name { color: var(--green); }
     .token.attr-value { color: var(--yellow); }
     .token.tag { color: var(--pink); }
+    .token.parameter { color: var(--orange); }
+    .token.selector { color: var(--pink); }
+    .token.property { color: var(--cyan); }
 
     /* Utility classes for custom HTML sections */
     .callout {
