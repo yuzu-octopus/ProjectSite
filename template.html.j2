@@ -98,6 +98,41 @@
     }
 
     h1, h2, h3, h4 { font-weight: 700; text-wrap: balance; }
+    strong { color: var(--purple); }
+    em { color: var(--cyan); font-style: italic; }
+    blockquote {
+      border-left: 3px solid var(--purple);
+      padding: 8px 16px;
+      margin: 12px 0;
+      background: color-mix(in srgb, var(--panel) 50%, transparent);
+      border-radius: 0 8px 8px 0;
+      color: var(--muted);
+    }
+    blockquote p { color: var(--fg); }
+    figure {
+      margin: 12px 0;
+      text-align: center;
+    }
+    figure img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    figcaption {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    details {
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+    }
+    details summary {
+      cursor: pointer;
+      color: var(--purple);
+      font-weight: 600;
+    }
 
     .sidebar {
       position: fixed;
@@ -277,12 +312,14 @@
     }
 
     .btn-primary {
-      color: var(--purple);
+      background: var(--purple);
+      color: var(--fg);
       border-color: var(--purple);
-      background: transparent;
     }
 
     .btn-primary:hover {
+      background: transparent;
+      color: var(--purple);
       border-color: var(--purple);
     }
 

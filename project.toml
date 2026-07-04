@@ -83,6 +83,7 @@ id = "usage"
 type = "code_block"
 title = "Usage"
 icon = "play"
+language = "bash"
 code = """
 # Single project
 uv run python genpage.py --input project.toml --output docs/index.html

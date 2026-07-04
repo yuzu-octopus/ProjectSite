@@ -183,9 +183,22 @@ description = "Official Dracula color palette"
 id = "notice"
 type = "custom"
 body = """
-<div style="padding: 1rem; border-left: 3px solid var(--cyan);">
-  <strong>Custom content</strong> goes here.
-</div>
+<div class="callout callout-info"><strong>Note:</strong> This is a notice.</div>
+"""
+```
+
+#### `type = "code_block"` — pre-formatted code with syntax highlighting
+
+```toml
+[[sections]]
+id = "quickstart"
+type = "code_block"
+title = "Quick Start"
+icon = "play"
+language = "python"
+code = """
+def hello():
+    print("Hello, world!")
 """
 ```
 
@@ -266,6 +279,20 @@ Press <kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">K</kbd> to search.
 ```html
 <hr class="divider">
 ```
+
+### Styled HTML Elements
+
+These elements are automatically styled in the Dracula/Alucard theme:
+
+| Element | Style |
+|---------|-------|
+| `<strong>` | Purple text (bold) |
+| `<em>` | Cyan italic |
+| `<blockquote>` | Purple left border, muted background |
+| `<figure>` + `<figcaption>` | Centered image with caption |
+| `<details>` / `<summary>` | Collapsible section with purple summary |
+| `<code>` | Green code on panel background |
+| `<a>` | Cyan links, pink on hover |
 
 ### Available CSS Variables
 
