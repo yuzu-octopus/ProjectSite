@@ -3,7 +3,7 @@
 
 import argparse
 import tomllib
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
@@ -39,7 +39,7 @@ def validate(data: dict) -> None:
 
 
 def render(template_name: str, data: dict) -> str:
-    data["current_year"] = datetime.now().year
+    data["current_year"] = datetime.now(UTC).year
     env = Environment(
         loader=FileSystemLoader(HERE),
         autoescape=False,  # noqa: S701 — trusted TOML input, static site output
