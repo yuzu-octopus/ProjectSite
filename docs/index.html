@@ -570,22 +570,25 @@
     .timeline {
       list-style: none;
       padding: 0 0 0 100px;
-      position: relative;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 180px;
-      top: 12px;
-      bottom: 12px;
-      width: 2px;
-      background: var(--muted);
-      z-index: 0;
     }
     .timeline-item {
       display: flex;
       gap: 0;
       position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 80px;
+      top: 10px;
+      bottom: 0;
+      width: 2px;
+      background: var(--muted);
+      z-index: 0;
+    }
+    .timeline-item:last-child::before {
+      bottom: auto;
+      height: 10px;
     }
     .timeline-date-col {
       width: 72px;
