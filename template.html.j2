@@ -76,7 +76,7 @@
       --muted: #6C664B;
       --purple: #644AC9;
       --pink: #A3144D;
-      --cyan: #036A96;
+      --cyan: #0891C2;
       --green: #14710A;
       --orange: #A34D14;
       --red: #CB3A2A;
@@ -438,29 +438,21 @@
       padding: 0;
     }
 
-    /* Prism.js Dracula theme override */
+    /* Prism.js Dracula theme override — every token type */
     pre[class*="language-"] { background: var(--bg); border: 1px solid var(--muted); border-radius: 8px; padding: 16px; margin: 0; font-family: var(--font); font-size: 0.8rem; line-height: 1.6; }
     code[class*="language-"] { text-shadow: none; font-family: var(--font); font-size: 0.8rem; background: none; padding: 0; color: var(--fg); }
-    .token.comment { color: var(--muted); }
-    .token.keyword { color: var(--pink); }
-    .token.string { color: var(--yellow); }
-    .token.function { color: var(--green); }
-    .token.number { color: var(--orange); }
-    .token.operator { color: var(--pink); }
+    .token.comment, .token.prolog, .token.cdata { color: var(--muted); }
     .token.punctuation { color: var(--fg); }
-    .token.class-name { color: var(--cyan); }
-    .token.boolean { color: var(--orange); }
-    .token.builtin { color: var(--cyan); }
+    .token.namespace { opacity: 0.8; }
+    .token.keyword, .token.operator { color: var(--pink); }
+    .token.string, .token.attr-value, .token.regex { color: var(--yellow); }
+    .token.function, .token.attr-name { color: var(--green); }
+    .token.number, .token.boolean, .token.constant, .token.parameter, .token.variable { color: var(--orange); }
+    .token.class-name, .token.builtin, .token.property, .token.url { color: var(--cyan); }
+    .token.tag, .token.selector, .token.entity, .token.atrule { color: var(--pink); }
     .token.decorator { color: var(--purple); }
-    .token.attr-name { color: var(--green); }
-    .token.attr-value { color: var(--yellow); }
-    .token.tag { color: var(--pink); }
-    .token.parameter { color: var(--orange); }
-    .token.selector { color: var(--pink); }
-    .token.property { color: var(--cyan); }
-    .token.constant { color: var(--orange); }
-    .token.regex { color: var(--yellow); }
-    .token.url { color: var(--cyan); }
+    .token.important { font-weight: 700; }
+    .token.italic { font-style: italic; }
 
     /* Utility classes for custom HTML sections */
     .callout {
