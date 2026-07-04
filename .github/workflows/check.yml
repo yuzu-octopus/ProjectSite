@@ -18,16 +18,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Install uv
+        run: pip install uv
       - name: Install dependencies
-        run: pip install jinja2 ruff
+        run: uv pip install --system jinja2 ruff pyright pytest
       - name: Lint
         run: ruff check genpage.py
+      - name: Type check
+        run: pyright genpage.py
+      - name: Test
+        run: pytest tests/ -v
       - name: Generate project page
         run: python genpage.py --input project.toml --output docs/index.html
       - name: Commit generated page
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/
           if git diff --cached --quiet; then
             echo "No changes to commit"

@@ -29,6 +29,53 @@ REQUIRED_PROJECT_KEYS = {
 }
 
 
+_ITEMS_TYPES = {"features", "steps", "stack", "links", "timeline", "workflow", "terms"}
+_BODY_TYPES = {"text", "custom", "notice"}
+
+
+_ITEM_KEYS = {
+    "features": ("title", "body"),
+    "steps": ("title", "body"),
+    "stack": ("name", "description"),
+    "links": ("title", "url", "description"),
+    "timeline": ("title", "body"),
+    "workflow": ("title", "body"),
+    "terms": ("term", "definition"),
+}
+
+
+def _validate_section_fields(section: dict, index: int, st: str) -> None:
+    if st in _ITEMS_TYPES:
+        items = section.get("items")
+        if not isinstance(items, list):
+            msg = f"sections[{index}] type='{st}' requires 'items' to be a list"
+            raise SystemExit(msg)
+        required = _ITEM_KEYS.get(st, ())
+        for j, item in enumerate(items):
+            if not isinstance(item, dict):
+                msg = f"sections[{index}].items[{j}] must be a dict"
+                raise SystemExit(msg)
+            for key in required:
+                if key not in item:
+                    msg = f"sections[{index}].items[{j}] type='{st}' requires '{key}'"
+                    raise SystemExit(msg)
+    elif st == "code_block":
+        if "code" not in section or not isinstance(section["code"], str):
+            msg = f"sections[{index}] type='code_block' requires 'code' (string)"
+            raise SystemExit(msg)
+    elif st == "table":
+        if "headers" not in section or not isinstance(section["headers"], list):
+            msg = f"sections[{index}] type='table' requires 'headers' (list)"
+            raise SystemExit(msg)
+        if "rows" not in section or not isinstance(section["rows"], list):
+            msg = f"sections[{index}] type='table' requires 'rows' (list)"
+            raise SystemExit(msg)
+    elif st in _BODY_TYPES:
+        if "body" not in section or not isinstance(section["body"], str):
+            msg = f"sections[{index}] type='{st}' requires 'body' (string)"
+            raise SystemExit(msg)
+
+
 def validate(data: dict) -> None:
     missing = REQUIRED_TOP_KEYS - data.keys()
     if missing:
@@ -62,6 +109,8 @@ def validate(data: dict) -> None:
             valid = ", ".join(sorted(KNOWN_SECTION_TYPES))
             msg = f"sections[{i}] unknown type '{st}'. Valid types: {valid}"
             raise SystemExit(msg)
+
+        _validate_section_fields(section, i, st)
 
 
 def render(template_name: str, data: dict) -> str:

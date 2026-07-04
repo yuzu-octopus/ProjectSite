@@ -117,14 +117,14 @@ id = "quickstart"
 type = "code_block"
 title = "Quick Start"
 icon = "play"
+language = "python"
 code = """
-# Install dependencies
-uv sync
-
-# Train
-uv run python main.py
+def hello():
+    print("Hello, world!")
 """
 ```
+
+`language` is optional — omit it for plain `<pre><code>` without syntax highlighting.
 
 #### `type = "stack"` — tech badge grid
 
@@ -155,9 +155,11 @@ body = """
 
 ### Icons
 
-Named SVG icons available for sidebar nav entries:
+Named Material Symbols icons for sidebar nav entries. Short names map to full
+icon names automatically. Unrecognized names are passed through as-is (valid
+Material Symbols names like `psychology`, `bolt`, `terminal` work directly).
 
-`home` `grid` `info` `chip` `layers` `document` `play` `gear` `link`
+Common short names: `home` `grid` `info` `chip` `layers` `document` `play` `gear` `link` `star` `heart` `check` `alert` `code` `terminal` `rocket` `chart` `key` `zap` `search` `folder` `cpu` `model` `train` `deploy` `security` `network` `timer` `speed` `palette` `book` `school` `work`
 
 #### `type = "links"` — external resource cards
 
@@ -244,21 +246,6 @@ body = "Train the model"
 [[sections.items]]
 title = "Evaluate"
 body = "Benchmark results"
-```
-
-#### `type = "code_block"` — pre-formatted code with syntax highlighting
-
-```toml
-[[sections]]
-id = "quickstart"
-type = "code_block"
-title = "Quick Start"
-icon = "play"
-language = "python"
-code = """
-def hello():
-    print("Hello, world!")
-"""
 ```
 
 ## CI Setup (per project)
@@ -384,3 +371,9 @@ Supported languages: Python, JavaScript, TypeScript, HTML, CSS, Bash, Shell Sess
 
 - Add a **`.nojekyll`** file to the output directory (`docs/`) to prevent GitHub
   Pages' default Jekyll build from interfering with the generated HTML.
+- **TOML input is trusted.** HTML in `body` fields (for `text`, `custom`, `notice`
+  types) is rendered raw. Only `code_block` content auto-escapes via `| e` filter.
+- **Prism.js YAML + `${{ }}`**: YAML containing GitHub Actions template syntax
+  (`${{ github.* }}`) highlights imperfectly — Prism misclassifies the template
+  tokens. Use `language = "text"` if this bothers you, or accept the minor visual
+  quirk (code remains readable).

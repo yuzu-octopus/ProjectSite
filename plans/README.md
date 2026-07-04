@@ -7,7 +7,7 @@
 | 003 | Deduplicate projectpage skill CI section | DONE | — |
 | 001 | Fix CI workflow auth in README | DONE (already fixed in 6a78fb3) | 003 |
 | 002 | Add TOML schema validation | DONE | — |
-| 004 | CSS polish — fluid type, text-wrap, hover | TODO | — |
+| 004 | CSS polish — fluid type, text-wrap, hover | DONE | — |
 
 **Execution order:** 003 → 001 → 002 → 004
 
