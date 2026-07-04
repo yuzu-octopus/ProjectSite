@@ -642,6 +642,12 @@
 
 </span> Features</a></li>
       
+      <li><a href="#ci"><span class="icon">
+
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg>
+
+</span> CI Workflow</a></li>
+      
       <li><a href="#usage"><span class="icon">
 
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="6 3 20 12 6 21"/></svg>
@@ -711,6 +717,54 @@
         </div>
         
       </div>
+
+      
+    </div>
+  </section>
+  
+  <section id="ci" class="reveal">
+    <div class="container">
+      
+      <h2>CI Workflow</h2>
+      
+
+      
+      <pre><code>name: Deploy project page
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - &#34;project.toml&#34;
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: &#34;3.11&#34;
+      - name: Checkout generator
+        uses: actions/checkout@v4
+        with:
+          repository: yuzu-octopus/ProjectSite
+          path: generator
+      - name: Generate page
+        run: |
+          pip install jinja2
+          python generator/genpage.py --input project.toml --output docs/index.html
+      - name: Commit generated page
+        run: |
+          git config user.name &#34;github-actions[bot]&#34;
+          git config user.email &#34;github-actions[bot]@users.noreply.github.com&#34;
+          git add docs/
+          git diff --cached --quiet || git commit -m &#34;ci: regenerate project page [skip ci]&#34;
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
+</code></pre>
 
       
     </div>
