@@ -31,7 +31,7 @@ tables and an array of sections.
 | `github_url` | string | Link to the GitHub repo |
 | `page_url` | string | URL where the page will be served |
 | `logo_svg` | string | Inline SVG for the sidebar logo (64×64). Use CSS variables for theme support. |
-| `og_image` | string | Optional — filename of an OG image (e.g. `"og-image.png"`) |
+| `og_image` | string | Optional — filename of an OG image (e.g. `"og-image.png"`). If omitted, the generator auto-creates `og-image.png` alongside the HTML with logo, name, tagline, and subtitle in Dracula theme. |
 
 ### `[brand]` — required
 
@@ -279,9 +279,11 @@ jobs:
           repository: yuzu-octopus/ProjectSite
           path: generator
           persist-credentials: false
+      - name: Install system deps
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev
       - name: Generate page
         run: |
-          pip install jinja2
+          pip install jinja2 pillow cairosvg
           python generator/genpage.py --input project.toml --output docs/index.html
       - name: Commit generated page
         run: |
@@ -366,6 +368,23 @@ def hello():
 ```
 
 Supported languages: Python, JavaScript, TypeScript, HTML, CSS, Bash, Shell Session, TOML, YAML, JSON, Rust, Go, C, C++, Java, Swift, Kotlin, Docker, Markdown, Diff, SQL, Lua, Ruby, PowerShell.
+
+## OG Image Auto-Generation
+
+When generating a page, the generator automatically creates an `og-image.png`
+in the output directory alongside the HTML. The image is a 1200×630 PNG with
+Dracula theme, showing the project logo on the left and name + tagline +
+subtitle on the right. The template references it in `og:image` and
+`twitter:image` meta tags automatically.
+
+Requirements for OG image generation:
+- `pillow` and `cairosvg` Python packages (installed automatically via `uv`)
+- Cairo C library (`brew install cairo` on macOS, `apt install libcairo2` on
+  Ubuntu). If Cairo is not available, generation gracefully skips with a
+  warning — the page still builds without an OG image.
+
+To use a custom OG image instead, set `og_image` explicitly in `[project]`
+(e.g. `og_image = "custom-preview.png"`). The generator won't override it.
 
 ## Notes
 

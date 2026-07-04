@@ -14,3 +14,6 @@ pyright genpage.py
 
 ## Test
 uv run pytest tests/ -v
+
+## Test
+uv run pytest tests/ -v

@@ -9,6 +9,14 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
+# Dracula dark theme palette for OG image generation
+_DRACULA = {
+    "--bg": "#282a36", "--panel": "#44475a", "--fg": "#f8f8f2",
+    "--muted": "#6272a4", "--purple": "#bd93f9", "--pink": "#ff79c6",
+    "--cyan": "#8be9fd", "--green": "#50fa7b", "--orange": "#ffb86c",
+    "--red": "#ff5555", "--yellow": "#f1fa8c",
+}
+
 HERE = Path(__file__).parent
 TEMPLATE = "template.html.j2"
 
@@ -144,11 +152,94 @@ def render(template_name: str, data: dict) -> str:
     return template.render(**data)
 
 
+def _resolve_svg_vars(svg: str) -> str:
+    """Replace var(--*) references in SVG with Dracula dark theme colors."""
+    for var_name, color in _DRACULA.items():
+        svg = svg.replace(f"var({var_name})", color)
+    return svg
+
+
+def _escape_xml(text: str) -> str:
+    """Escape text for XML/SVG embedding."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def _extract_logo_inner(logo_svg: str) -> tuple[str, str]:
+    """Resolve colors and extract inner content + viewBox from a logo SVG.
+
+    Returns (inner_svg_content, viewBox_string).
+    """
+    resolved = _resolve_svg_vars(logo_svg)
+    resolved = re.sub(r"<\?xml[^>]*\?>", "", resolved).strip()
+    vb_match = re.search(r'viewBox="([^"]*)"', resolved)
+    viewBox = vb_match.group(1) if vb_match else "0 0 64 64"
+    svg_start = re.search(r"<svg[^>]*>", resolved)
+    if not svg_start:
+        return resolved, viewBox
+    inner_start = svg_start.end()
+    svg_end = resolved.rfind("</svg>")
+    inner = resolved[inner_start:svg_end].strip() if svg_end != -1 else resolved[inner_start:]
+    return inner, viewBox
+
+
+def generate_og_image(project: dict, output_path: Path) -> None:
+    """Generate a 1200x630 OG preview PNG with Dracula theme (logo + title)."""
+    try:
+        import cairosvg
+    except (ImportError, OSError):
+        print("  ! cairosvg not available, skipping OG image")
+        return
+
+    name = project.get("name", "")
+    tagline = project.get("tagline", "")
+    subtitle = project.get("subtitle", "")
+    logo_svg = project.get("logo_svg", "")
+
+    logo_inner, viewBox = _extract_logo_inner(logo_svg)
+
+    # Truncate long subtitle to avoid overflow
+    if len(subtitle) > 120:
+        subtitle = subtitle[:117] + "..."
+
+    og_svg = f"""<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#282a36" rx="16"/>
+  <svg x="80" y="175" width="240" height="240" viewBox="{viewBox}">
+{logo_inner}
+  </svg>
+  <text x="360" y="245" font-family="JetBrains Mono,monospace" font-size="52" font-weight="700" fill="#bd93f9">{_escape_xml(name)}</text>
+  <text x="360" y="315" font-family="JetBrains Mono,monospace" font-size="28" fill="#f8f8f2">{_escape_xml(tagline)}</text>
+  <text x="360" y="365" font-family="JetBrains Mono,monospace" font-size="20" fill="#6272a4">{_escape_xml(subtitle)}</text>
+  <rect x="360" y="395" width="80" height="4" fill="#bd93f9" rx="2"/>
+</svg>"""
+
+    try:
+        cairosvg.svg2png(
+            bytestring=og_svg.encode("utf-8"),
+            write_to=str(output_path),
+            output_width=1200,
+            output_height=630,
+        )
+    except Exception as e:
+        print(f"  ! OG image generation failed: {e}")
+
+
 def generate_one(input_path: Path, output_path: Path) -> None:
     data = load_toml(input_path)
     validate(data)
-    html = render(TEMPLATE, data)
+
+    # Ensure output directory exists before generating OG image
     output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Generate OG image before render so template can reference it
+    og_path = output_path.parent / "og-image.png"
+    generate_og_image(data.get("project", {}), og_path)
+    # Set og_image for template (only if not already set by user)
+    project = data.setdefault("project", {})
+    if "og_image" not in project:
+        project["og_image"] = "og-image.png"
+
+    html = render(TEMPLATE, data)
     output_path.write_text(html, encoding="utf-8")
     print(f"  \u2713 {output_path}")
 
