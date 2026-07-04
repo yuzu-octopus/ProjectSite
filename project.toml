@@ -109,57 +109,39 @@ name = "uv"
 description = "Python package manager"
 
 [[sections]]
-id = "showcase-features"
-type = "features"
-title = "Showcase — Feature Cards"
-icon = "grid"
+id = "showcase"
+type = "custom"
+title = "Components Showcase"
+icon = "layers"
+body = """
+<h2 style="margin-top:0;">Feature Cards</h2>
+<div class="grid">
+  <div class="card"><h3>Lorem Ipsum Dolor</h3><p>Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+  <div class="card"><h3>Ut Enim Ad Minim</h3><p>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.</p></div>
+  <div class="card"><h3>Duis Aute Irure</h3><p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint.</p></div>
+  <div class="card"><h3>Excepteur Sint Occaecat</h3><p>Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis.</p></div>
+</div>
 
-[[sections.items]]
-title = "Lorem Ipsum Dolor"
-body = "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+<hr class="divider">
 
-[[sections.items]]
-title = "Ut Enim Ad Minim"
-body = "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure."
+<h2>Data Table</h2>
+<div style="overflow-x:auto;">
+<table>
+  <thead><tr><th>Metric</th><th>Value</th><th>Change</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>Lorem ipsum</td><td>36.4%</td><td>+2.1%</td><td>Stable</td></tr>
+    <tr><td>Dolor sit amet</td><td>12.8K</td><td>&minus;0.4%</td><td>Declining</td></tr>
+    <tr><td>Consectetur adip</td><td>847</td><td>+12.3%</td><td>Growing</td></tr>
+    <tr><td>Sed do eiusmod</td><td>3.2M</td><td>+45.7%</td><td>Surge</td></tr>
+    <tr><td>Tempor incididunt</td><td>92.1%</td><td>&minus;0.1%</td><td>Stable</td></tr>
+  </tbody>
+</table>
+</div>
 
-[[sections.items]]
-title = "Duis Aute Irure"
-body = "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint."
+<hr class="divider">
 
-[[sections.items]]
-title = "Excepteur Sint Occaecat"
-body = "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis."
-
-[[sections]]
-id = "showcase-table"
-type = "table"
-title = "Showcase — Data Table"
-icon = "info"
-headers = ["Metric", "Value", "Change", "Status"]
-
-[[sections.rows]]
-cells = ["Lorem ipsum", "36.4%", "+2.1%", "Stable"]
-
-[[sections.rows]]
-cells = ["Dolor sit amet", "12.8K", "−0.4%", "Declining"]
-
-[[sections.rows]]
-cells = ["Consectetur adip", "847", "+12.3%", "Growing"]
-
-[[sections.rows]]
-cells = ["Sed do eiusmod", "3.2M", "+45.7%", "Surge"]
-
-[[sections.rows]]
-cells = ["Tempor incididunt", "92.1%", "−0.1%", "Stable"]
-
-[[sections]]
-id = "showcase-code"
-type = "code_block"
-title = "Showcase — Code Highlighting"
-icon = "code"
-language = "python"
-code = """
-def fibonacci(n: int) -> list[int]:
+<h2>Code Highlighting</h2>
+<pre><code class="language-python">def fibonacci(n: int) -> list[int]:
     \"\"\"Generate first n Fibonacci numbers.\"\"\"
     if n <= 0:
         return []
@@ -171,144 +153,74 @@ def fibonacci(n: int) -> list[int]:
 # Example usage
 result = fibonacci(10)
 print(f"First 10 Fibonacci: {result}")
-# Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
-"""
+# Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</code></pre>
 
-[[sections]]
-id = "showcase-notice"
-type = "notice"
-title = "Showcase — Callout Notice"
-icon = "info"
-notice_type = "warning"
-body = """
-<p><strong>Lorem ipsum dolor sit amet.</strong> Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
-"""
+<hr class="divider">
 
-[[sections]]
-id = "showcase-timeline"
-type = "timeline"
-title = "Showcase — Timeline"
-icon = "layers"
-
-[[sections.items]]
-title = "Lorem Ipsum"
-body = "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
-date = "Phase 1"
-
-[[sections.items]]
-title = "Ut Enim Ad Minim"
-body = "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip."
-date = "Phase 2"
-
-[[sections.items]]
-title = "Duis Aute Irure"
-body = "Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat."
-
-[[sections.items]]
-title = "Excepteur Sint"
-body = "Occaecat cupidatat non proident sunt in culpa qui officia deserunt."
-date = "Phase 4"
-
-[[sections]]
-id = "showcase-workflow"
-type = "workflow"
-title = "Showcase — Workflow Pipeline"
-icon = "layers"
-
-[[sections.items]]
-title = "Data Ingest"
-body = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
-
-[[sections.items]]
-title = "Preprocess"
-body = "Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
-
-[[sections.items]]
-title = "Train Model"
-body = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
-
-[[sections.items]]
-title = "Validate"
-body = "Excepteur sint occaecat cupidatat non proident sunt in culpa qui."
-
-[[sections.items]]
-title = "Deploy"
-body = "Sed perspiciatis unde omnis iste natus error sit voluptatem accusantium."
-
-[[sections]]
-id = "showcase-steps"
-type = "steps"
-title = "Showcase — Numbered Steps"
-icon = "layers"
-
-[[sections.items]]
-title = "Step One: Investigate"
-body = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
-
-[[sections.items]]
-title = "Step Two: Analyze"
-body = "Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip."
-
-[[sections.items]]
-title = "Step Three: Execute"
-body = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."
-
-[[sections.items]]
-title = "Step Four: Review"
-body = "Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt."
-
-[[sections]]
-id = "showcase-links"
-type = "links"
-title = "Showcase — Resource Links"
-icon = "link"
-
-[[sections.items]]
-title = "Lorem Ipsum Generator"
-url = "https://www.lipsum.com/"
-description = "Classic Lorem Ipsum text generator for placeholder content."
-
-[[sections.items]]
-title = "Dracula Theme"
-url = "https://draculatheme.com/"
-description = "Dark theme for over 300+ apps used by millions worldwide."
-
-[[sections.items]]
-title = "Material Symbols"
-url = "https://fonts.google.com/icons"
-description = "Variable icon font by Google — 3000+ icons, single-weight CDN."
-
-[[sections.items]]
-title = "Jinja2 Documentation"
-url = "https://jinja.palletsprojects.com/"
-description = "Official docs for the Jinja2 templating engine used in this project."
-
-[[sections]]
-id = "showcase-text"
-type = "text"
-title = "Showcase — Raw HTML"
-icon = "document"
-body = """
-<div class="callout callout-info">
-  <strong>Tip:</strong> Use <code>type = "text"</code> for arbitrary HTML content.
-  All CSS variables (<code>--bg</code>, <code>--fg</code>, <code>--purple</code>, etc.) are available.
+<h2>Callout Notice</h2>
+<div class="callout callout-warning">
+  <p><strong>Lorem ipsum dolor sit amet.</strong> Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
 </div>
-<figure>
-  <figcaption>Sample styled elements in action:</figcaption>
-</figure>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
-  <kbd class="kbd">Ctrl</kbd><span style="color:var(--muted)"> + </span><kbd class="kbd">K</kbd>
-  <span style="color:var(--muted)">&middot;</span>
+
+<hr class="divider">
+
+<h2>Timeline</h2>
+<ul class="timeline">
+  <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 1</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Lorem Ipsum</strong><p>Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.</p></div></li>
+  <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 2</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Ut Enim Ad Minim</strong><p>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div></li>
+  <li class="timeline-item"><div class="timeline-date-col"></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Duis Aute Irure</strong><p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p></div></li>
+  <li class="timeline-item"><div class="timeline-date-col"><span class="timeline-date">Phase 4</span></div><div class="timeline-marker"><div class="timeline-dot"></div></div><div class="timeline-content"><strong>Excepteur Sint</strong><p>Occaecat cupidatat non proident sunt in culpa qui officia deserunt.</p></div></li>
+</ul>
+
+<hr class="divider">
+
+<h2>Workflow Pipeline</h2>
+<div class="workflow">
+  <div class="workflow-item"><div class="workflow-top"><div class="workflow-line"></div><div class="workflow-dot">1</div><div class="workflow-line"></div></div><div class="workflow-card"><h4>Data Ingest</h4><p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p></div></div>
+  <div class="workflow-item"><div class="workflow-top"><div class="workflow-line"></div><div class="workflow-dot">2</div><div class="workflow-line"></div></div><div class="workflow-card"><h4>Preprocess</h4><p>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p></div></div>
+  <div class="workflow-item"><div class="workflow-top"><div class="workflow-line"></div><div class="workflow-dot">3</div><div class="workflow-line"></div></div><div class="workflow-card"><h4>Train Model</h4><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p></div></div>
+  <div class="workflow-item"><div class="workflow-top"><div class="workflow-line"></div><div class="workflow-dot">4</div><div class="workflow-line"></div></div><div class="workflow-card"><h4>Validate</h4><p>Excepteur sint occaecat cupidatat non proident sunt in culpa qui.</p></div></div>
+  <div class="workflow-item"><div class="workflow-top"><div class="workflow-line"></div><div class="workflow-dot">5</div><div class="workflow-line"></div></div><div class="workflow-card"><h4>Deploy</h4><p>Sed perspiciatis unde omnis iste natus error sit voluptatem accusantium.</p></div></div>
+</div>
+
+<hr class="divider">
+
+<h2>Numbered Steps</h2>
+<ul class="steps">
+  <li><strong>Step One: Investigate</strong> &mdash; Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</li>
+  <li><strong>Step Two: Analyze</strong> &mdash; Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</li>
+  <li><strong>Step Three: Execute</strong> &mdash; Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+  <li><strong>Step Four: Review</strong> &mdash; Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt.</li>
+</ul>
+
+<hr class="divider">
+
+<h2>Resource Links</h2>
+<div class="links">
+  <a href="https://www.lipsum.com/" target="_blank" rel="noopener noreferrer" class="link-card"><strong>Lorem Ipsum Generator</strong><span>Classic Lorem Ipsum text generator for placeholder content.</span><span class="link-arrow">&rarr;</span></a>
+  <a href="https://draculatheme.com/" target="_blank" rel="noopener noreferrer" class="link-card"><strong>Dracula Theme</strong><span>Dark theme for over 300+ apps used by millions worldwide.</span><span class="link-arrow">&rarr;</span></a>
+  <a href="https://fonts.google.com/icons" target="_blank" rel="noopener noreferrer" class="link-card"><strong>Material Symbols</strong><span>Variable icon font by Google &mdash; 3000+ icons, single-weight CDN.</span><span class="link-arrow">&rarr;</span></a>
+  <a href="https://jinja.palletsprojects.com/" target="_blank" rel="noopener noreferrer" class="link-card"><strong>Jinja2 Documentation</strong><span>Official docs for the Jinja2 templating engine used in this project.</span><span class="link-arrow">&rarr;</span></a>
+</div>
+
+<hr class="divider">
+
+<h2>Styled HTML Elements</h2>
+<div class="callout callout-info"><strong>Tip:</strong> Use <code>type = &quot;custom&quot;</code> for arbitrary HTML content. All CSS variables are available.</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;">
+  <kbd class="kbd">Ctrl</kbd><span style="color:var(--muted);"> + </span><kbd class="kbd">K</kbd>
+  <span style="color:var(--muted);">&middot;</span>
   <strong>Bold text</strong>
-  <span style="color:var(--muted)">&middot;</span>
+  <span style="color:var(--muted);">&middot;</span>
   <em>Italic text</em>
 </div>
+
 <hr class="divider">
-<blockquote>
-  <p>"This is a blockquote. Lorem ipsum dolor sit amet consectetur adipiscing elit."</p>
-</blockquote>
+
+<blockquote><p>&ldquo;This is a blockquote. Lorem ipsum dolor sit amet consectetur adipiscing elit.&rdquo;</p></blockquote>
+
 <details>
   <summary>Click to expand</summary>
-  <p style="margin-top:8px;font-size:0.85rem;color:var(--fg);">Hidden content inside a details/summary element. Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+  <p style="margin-top:8px;font-size:0.85rem;color:var(--fg);">Hidden content inside a <code>details</code>/<code>summary</code> element. Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
 </details>
 """

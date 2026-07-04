@@ -401,7 +401,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 4px;
     }
     .workflow-dot {
       width: 28px;
@@ -410,11 +409,13 @@
       border-radius: 50%;
       background: var(--purple);
       color: var(--bg);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
+      line-height: 1;
       z-index: 1;
     }
     .workflow-line {
@@ -508,12 +509,12 @@
     .token.comment, .token.prolog, .token.cdata, .token.doctype { color: var(--muted); }
     .token.punctuation { color: var(--fg); }
     .token.namespace { opacity: 0.8; }
-    .token.keyword, .token.operator { color: var(--pink); }
+    .token.keyword, .token.operator { color: var(--pink); background: none; }
     .token.string, .token.attr-value, .token.regex { color: var(--yellow); }
     .token.function, .token.attr-name { color: var(--green); }
     .token.number, .token.boolean, .token.constant, .token.parameter, .token.variable { color: var(--orange); }
-    .token.class-name, .token.builtin, .token.property, .token.url, .token.symbol { color: var(--cyan); }
-    .token.tag, .token.selector, .token.entity, .token.atrule { color: var(--pink); }
+    .token.class-name, .token.builtin, .token.property, .token.url, .token.symbol { color: var(--cyan); background: none; }
+    .token.tag, .token.selector, .token.entity, .token.atrule { color: var(--pink); background: none; }
     .token.decorator { color: var(--purple); }
     .token.important, .token.bold { font-weight: 700; }
     .token.italic { font-style: italic; }
@@ -594,7 +595,35 @@
       width: 72px;
       text-align: right;
       flex-shrink: 0;
-      padding: 2px 8px 20px 0;
+      padding: 3px 8px 20px 0;
+    }
+    .timeline-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .timeline-marker {
+      width: 16px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 2px;
+      position: relative;
+    }
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--purple);
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .timeline-content {
+      flex: 1;
+      font-size: 0.85rem;
+      color: var(--fg);
+      padding: 3px 0 20px 12px;
     }
     .timeline-date {
       font-size: 0.75rem;
