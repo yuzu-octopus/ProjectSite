@@ -887,8 +887,21 @@ function toggleTheme() {
 }
 
 function updateFavicon() {
-  var svg = document.querySelector('.sidebar-brand .logo svg');
-  if (!svg) return;
+  var logo = document.querySelector('.sidebar-brand .logo');
+  if (!logo) return;
+  var svg = logo.querySelector('svg').cloneNode(true);
+  var walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT);
+  while (walker.nextNode()) {
+    var el = walker.currentNode;
+    ['fill', 'stroke'].forEach(function(attr) {
+      var val = el.getAttribute(attr);
+      if (val && val.startsWith('var(--')) {
+        var name = val.slice(4, -1);
+        var resolved = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        if (resolved) el.setAttribute(attr, resolved);
+      }
+    });
+  }
   var svgData = new XMLSerializer().serializeToString(svg);
   document.getElementById('favicon').href =
     'data:image/svg+xml,' + encodeURIComponent(svgData);
