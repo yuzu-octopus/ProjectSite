@@ -19,6 +19,7 @@ def load_toml(path: Path) -> dict:
 
 KNOWN_SECTION_TYPES = {
     "features", "table", "steps", "terms", "code_block", "stack", "text", "links", "custom",
+    "notice", "timeline", "workflow",
 }
 
 REQUIRED_TOP_KEYS = {"project", "brand", "sections"}

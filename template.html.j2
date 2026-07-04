@@ -383,6 +383,71 @@
       font-size: 0.8rem;
     }
 
+    .workflow {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 16px 0 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .workflow-item {
+      flex: 0 0 260px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+    }
+    .workflow-top {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+    }
+    .workflow-dot {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+    .workflow-line {
+      flex: 1;
+      height: 2px;
+      background: var(--muted);
+      margin-left: 8px;
+    }
+    .workflow-item:last-child .workflow-line { display: none; }
+    .workflow-card {
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 8px 8px 0;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .workflow-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-2px);
+    }
+    .workflow-step {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: var(--bg);
+      background: var(--purple);
+      padding: 1px 8px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .workflow-card h4 {
+      color: var(--purple);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .workflow-card p {
+      color: var(--fg);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
     table {
       width: 100%;
       border-collapse: separate;
@@ -505,6 +570,49 @@
     .steps li:last-child { border-bottom: none; }
 
     .steps li strong { color: var(--purple); }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--muted);
+      border-radius: 1px;
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0 0 20px 28px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--purple);
+    }
+    .timeline-content {
+      font-size: 0.85rem;
+      color: var(--fg);
+    }
+    .timeline-date {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .timeline-content strong { color: var(--purple); }
+    .timeline-content p { margin-top: 4px; }
 
     .terms {
       list-style: none;
@@ -842,6 +950,42 @@
 
       {% elif section.type == "custom" %}
       {{ section.body }}
+
+      {% elif section.type == "notice" %}
+      <div class="callout callout-{{ section.notice_type | default('info') }}">
+        {{ section.body }}
+      </div>
+
+      {% elif section.type == "timeline" %}
+      <ul class="timeline">
+        {% for item in section["items"] %}
+        <li class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            {% if item.date %}<span class="timeline-date">{{ item.date }}</span>{% endif %}
+            <strong>{{ item.title }}</strong>
+            <p>{{ item.body }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
+      {% elif section.type == "workflow" %}
+      <div class="workflow">
+        {% for item in section["items"] %}
+        <div class="workflow-item">
+          <div class="workflow-top">
+            <div class="workflow-dot"></div>
+            <div class="workflow-line"></div>
+          </div>
+          <div class="workflow-card">
+            <span class="workflow-step">{{ loop.index }}</span>
+            <h4>{{ item.title }}</h4>
+            <p>{{ item.body }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
 
       {% endif %}
     </div>
