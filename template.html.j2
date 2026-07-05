@@ -166,7 +166,6 @@
       border-right: 1px solid var(--muted);
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
       z-index: 1200;
     }
 
@@ -211,6 +210,7 @@
 
     .sidebar-nav {
       flex: 1;
+      overflow-y: auto;
       padding-top: 20px;
     }
 
@@ -1341,33 +1341,24 @@ function setActiveLink(id) {
   });
 }
 
-// Track all sections' visibility so overlapping/tall sections don't break scroll-spy.
-// IntersectionObserver callbacks only report entries whose status *changed*, so we
-// maintain a full Map and recalculate the topmost visible section on every event.
-var visibleSections = new Map();
-var sectionObserver = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    visibleSections.set(entry.target, entry.isIntersecting);
-  });
-  var best = null;
-  visibleSections.forEach(function(isVisible, el) {
-    if (isVisible) {
-      if (!best || el.getBoundingClientRect().top < best.getBoundingClientRect().top) {
-        best = el;
-      }
+// Scroll-position-based spy: find the last section whose top is above the
+// scroll threshold. Works reliably for small sections that never trigger
+// IntersectionObserver (threshold 0 with rootMargin misses short sections
+// that pass through the intersection zone between frames).
+var OFFSET = 120; // px below top of viewport to count as "scrolled past"
+function onScroll() {
+  var scrollY = window.scrollY + OFFSET;
+  var current = sections[0];
+  for (var i = 0; i < sections.length; i++) {
+    if (sections[i].offsetTop <= scrollY) {
+      current = sections[i];
     }
-  });
-  if (best) {
-    setActiveLink(best.getAttribute('id'));
   }
-}, { threshold: 0, rootMargin: '-80px 0px -40% 0px' });
-
-sections.forEach(function(s) { sectionObserver.observe(s); });
-
-// Set initial active state on load (hero is at the top)
-if (sections.length > 0) {
-  setActiveLink(sections[0].getAttribute('id'));
+  if (current) setActiveLink(current.getAttribute('id'));
 }
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 </script>
 </body>
 </html>
