@@ -285,7 +285,7 @@
     }
 
     section {
-      padding: 48px 40px;
+      padding: clamp(32px, 5vw, 48px) clamp(16px, 4vw, 40px);
     }
 
     .container {
@@ -641,7 +641,6 @@
     }
     .timeline-content strong {
       color: var(--purple);
-      line-height: 16px;
       display: inline-block;
     }
     .timeline-content p { margin-top: 4px; }
@@ -835,7 +834,6 @@
       }
       .sidebar-overlay.open { display: block; }
 
-      section { padding: 32px 16px; }
       .hero { padding: 60px 16px 32px; }
       .hero h1 { font-size: clamp(1.4rem, 6vw, 2rem); }
 
@@ -855,6 +853,10 @@
       .stack .badge { padding: 4px 8px; font-size: 0.7rem; }
 
       .grid { grid-template-columns: 1fr; }
+
+      pre { max-width: 100%; overflow-x: auto; }
+      table { display: block; overflow-x: auto; }
+      .timeline-date { font-size: 0.65rem; white-space: nowrap; }
     }
 
     @media print {
@@ -1253,11 +1255,15 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+var scrollingProgrammatically = false;
+
 document.querySelector('.sidebar-nav').addEventListener('click', function(e) {
   var link = e.target.closest('a[href^="#"]');
   if (link) {
     closeSidebar();
     setActiveLink(link.getAttribute('href').slice(1));
+    scrollingProgrammatically = true;
+    setTimeout(function() { scrollingProgrammatically = false; }, 800);
   }
 });
 
@@ -1362,20 +1368,31 @@ function setActiveLink(id) {
   });
 }
 
-// Scroll-position-based spy: find the last section whose top is above the
-// scroll threshold. Works reliably for small sections that never trigger
-// IntersectionObserver (threshold 0 with rootMargin misses short sections
-// that pass through the intersection zone between frames).
-var OFFSET = 120; // px below top of viewport to count as "scrolled past"
+// Viewport-intersection spy: find the section whose range overlaps the top
+// 30% of the viewport. Picks the one closest to the midpoint. Works for
+// small sections that the old offsetTop approach skipped during fast scrolling.
 function onScroll() {
-  var scrollY = window.scrollY + OFFSET;
-  var current = sections[0];
+  if (scrollingProgrammatically) return;
+  var viewportTop = window.scrollY;
+  var viewportMid = viewportTop + window.innerHeight * 0.3;
+  var best = null;
+  var bestDist = Infinity;
   for (var i = 0; i < sections.length; i++) {
-    if (sections[i].offsetTop <= scrollY) {
-      current = sections[i];
+    var rect = sections[i].getBoundingClientRect();
+    var sectionTop = rect.top + viewportTop;
+    var sectionBottom = sectionTop + rect.height;
+    if (sectionTop <= viewportMid && sectionBottom >= viewportTop) {
+      var dist = Math.abs(sectionTop - viewportMid);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = sections[i];
+      }
     }
   }
-  if (current) setActiveLink(current.getAttribute('id'));
+  if (!best && sections.length > 0) {
+    best = sections[sections.length - 1];
+  }
+  if (best) setActiveLink(best.getAttribute('id'));
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
