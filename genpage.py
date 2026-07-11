@@ -165,9 +165,13 @@ def _extract_logo_inner(logo_svg: str) -> tuple[str, str]:
 def _find_jetbrains_font(weight: str = "Regular") -> str | None:
     """Find a JetBrains Mono TTF file on the system."""
     search_dirs = [
-        Path.home() / "Library" / "Fonts",  # macOS
-        Path("/usr/share/fonts"),
-        Path("/usr/local/share/fonts"),
+        Path.home() / "Library" / "Fonts",  # macOS user fonts
+        Path("/Library/Fonts"),               # macOS system fonts
+        Path("/opt/homebrew/share/fonts"),   # macOS Homebrew (Apple Silicon)
+        Path("/usr/local/share/fonts"),      # macOS Homebrew (Intel) / Linux
+        Path("/usr/share/fonts"),            # Linux system fonts
+        Path.home() / ".fonts",              # Linux per-user
+        Path.home() / ".local" / "share" / "fonts",  # Linux XDG
     ]
     patterns = [
         f"JetBrainsMono-{weight}.ttf",
@@ -247,51 +251,68 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     bold_path = _find_jetbrains_font("Bold") or _find_jetbrains_font("Regular")
     regular_path = _find_jetbrains_font("Regular") or _find_jetbrains_font("Medium")
 
+    if not bold_path:
+        print("  ! JetBrains Mono Bold not found, using PIL default font (OG image text will be small)")
+
     try:
         font_name = ImageFont.truetype(bold_path or "", 48) if bold_path else ImageFont.load_default()
-    except Exception:
+    except (OSError, UnicodeDecodeError):
         font_name = ImageFont.load_default()
     try:
         font_tagline = ImageFont.truetype(regular_path or "", 26) if regular_path else ImageFont.load_default()
-    except Exception:
+    except (OSError, UnicodeDecodeError):
         font_tagline = ImageFont.load_default()
     try:
         font_subtitle = ImageFont.truetype(regular_path or "", 26) if regular_path else ImageFont.load_default()
-    except Exception:
+    except (OSError, UnicodeDecodeError):
         font_subtitle = ImageFont.load_default()
 
     # Create canvas
     img = Image.new("RGB", (1200, 630), BG)
     draw = ImageDraw.Draw(img)
 
-    # Resolve var(--) references in logo SVG for cairosvg
+    # Logo layout constants — used whether or not logo renders
+    logo_size = 200
+    logo_x = 80
+    logo_y = (630 - logo_size) // 2
+
+    # Resolve var(--) references in logo SVG for cairosvg.
+    # Sort by key length descending so longer names match before shorter ones,
+    # avoiding partial-match corruption (e.g. --bg-color matched by --bg).
     _SVG_COLORS = {
         "--bg": "#282a36", "--panel": "#44475a", "--fg": "#f8f8f2",
         "--muted": "#8ca0d7", "--purple": "#bd93f9", "--pink": "#ff79c6",
         "--cyan": "#8be9fd", "--green": "#50fa7b", "--orange": "#ffb86c",
         "--red": "#ff5555", "--yellow": "#f1fa8c",
     }
-    logo_svg_resolved = logo_svg
-    for var_name, color in _SVG_COLORS.items():
-        logo_svg_resolved = logo_svg_resolved.replace(f"var({var_name})", color)
+    if not logo_svg.strip():
+        print("  ! Empty logo_svg, skipping logo")
+    else:
+        logo_svg_resolved = logo_svg
+        for var_name in sorted(_SVG_COLORS, key=len, reverse=True):
+            logo_svg_resolved = logo_svg_resolved.replace(f"var({var_name})", _SVG_COLORS[var_name])
 
-    # Render logo from SVG via cairosvg → paste as RGBA
-    logo_size = 200
-    logo_x = 80
-    logo_y = (630 - logo_size) // 2
-    try:
-        logo_inner, viewBox = _extract_logo_inner(logo_svg_resolved)
-        logo_svg_full = (
-            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewBox}">'
-            f"{logo_inner}</svg>"
-        )
-        logo_png = cairosvg.svg2png(bytestring=logo_svg_full.encode("utf-8"))
-        if logo_png:
-            logo_img = Image.open(BytesIO(logo_png)).convert("RGBA")
-            logo_img = logo_img.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
-            img.paste(logo_img, (logo_x, logo_y), logo_img)
-    except Exception:
-        pass  # Logo is optional — skip if rendering fails
+        # Render logo from SVG via cairosvg → paste as RGBA, preserving aspect ratio
+        try:
+            logo_inner, viewBox = _extract_logo_inner(logo_svg_resolved)
+            logo_svg_full = (
+                f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewBox}">'
+                f"{logo_inner}</svg>"
+            )
+            logo_png = cairosvg.svg2png(bytestring=logo_svg_full.encode("utf-8"))
+            if logo_png:
+                logo_img = Image.open(BytesIO(logo_png)).convert("RGBA")
+                # Preserve aspect ratio — fit within logo_size square
+                w, h = logo_img.size
+                if w > 0 and h > 0:
+                    ratio = min(logo_size / w, logo_size / h)
+                    new_size = (int(w * ratio), int(h * ratio))
+                    logo_img = logo_img.resize(new_size, Image.Resampling.LANCZOS)
+                paste_x = logo_x + (logo_size - logo_img.width) // 2
+                paste_y = logo_y + (logo_size - logo_img.height) // 2
+                img.paste(logo_img, (paste_x, paste_y), logo_img)
+        except Exception:
+            print("  ! Logo rendering failed, continuing without logo")
 
     # Text area: starts after logo + gap, max width to right edge with margin
     text_x = logo_x + logo_size + 40  # 320

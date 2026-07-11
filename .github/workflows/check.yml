@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install system deps
-        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev fonts-jetbrains-mono
       - name: Install uv
         run: pip install uv
       - name: Install dependencies
