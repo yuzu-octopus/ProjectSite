@@ -252,48 +252,8 @@ body = "Benchmark results"
 ## CI Setup (per project)
 
 Each project repo runs the generator in CI and commits the result to its
-`docs/` folder. Example GitHub Actions workflow (`.github/workflows/deploy.yml`):
-
-```yaml
-name: Deploy project page
-
-permissions:
-  contents: write
-
-on:
-  push:
-    branches: [main]
-    paths:
-      - "project.toml"
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Checkout generator
-        uses: actions/checkout@v4
-        with:
-          repository: yuzu-octopus/ProjectSite
-          path: generator
-          persist-credentials: false
-      - name: Install system deps
-        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev
-      - name: Generate page
-        run: |
-          pip install jinja2 pillow cairosvg
-          python generator/genpage.py --input project.toml --output docs/index.html
-      - name: Commit generated page
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          git diff --cached --quiet || git commit -m "ci: regenerate project page [skip ci]"
-          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
-```
+`docs/` folder. See [`.github/workflows/check.yml`](.github/workflows/check.yml)
+for the canonical CI workflow.
 
 ## Generator Files
 

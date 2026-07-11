@@ -112,24 +112,7 @@ section's meaning genuinely calls for a different icon.
 
 ### All available icon names
 
-130+ Material Symbols icons available. Short names map to full names automatically.
-Unrecognized names pass through as-is (valid Material Symbols names work directly).
-
-Common: `home` `grid` `info` `chip` `layers` `document` `play` `gear` `link`
-`star` `heart` `check` `alert` `code` `terminal` `rocket` `chart` `key` `zap`
-`search` `folder` `cpu` `model` `train` `deploy` `security` `network` `timer`
-`speed` `palette` `book` `school` `work` `settings` `api` `test` `bug`
-`eye` `filter` `sort` `refresh` `save` `edit` `delete` `add` `remove`
-`close` `menu` `arrow_right` `arrow_left` `external` `gpu` `benchmark`
-`compare` `history` `font` `image` `video` `audio` `file` `tag` `flag`
-`pin` `map` `location` `time` `date` `event` `calendar` `notification`
-`message` `email` `phone` `chat` `comment` `reply` `forward` `attach`
-`send` `inbox` `archive` `thumb_up` `thumb_down` `emoji` `language`
-`translate` `currency` `calculate` `science` `biotech` `psychology`
-`health` `eco` `water` `energy` `solar` `wind` `battery` `power`
-`light` `dark` `sun` `moon` `favorite_border` `library` `business`
-`store` `shopping` `payment` `account` `person` `people` `group` `team`
-`database` `cloud` `lock` `bell`
+See the [icon macro in template.html.j2](../template.html.j2#L892) for the full list of ~130 supported Material Symbols icon names.
 
 ### Buttons
 
