@@ -23,3 +23,10 @@ uv run pytest tests/ -v
 - No box-shadow anywhere (flat design)
 - Scroll-spy uses visibility Map for tall/custom sections
 - OG image: Pillow renders text, cairosvg renders logo only
+
+# Draculite CSS Framework
+
+Standalone classless CSS framework (draculite.css) — Dracula dark/Alucard light,
+responsive tables, form elements, cards, badges, callouts, print styles.
+Drop into any HTML page via CDN:
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yuzu-octopus/ProjectSite@main/draculite.css">

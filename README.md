@@ -363,6 +363,23 @@ Requirements for OG image generation:
 To use a custom OG image instead, set `og_image` explicitly in `[project]`
 (e.g. `og_image = "custom-preview.png"`). The generator won't override it.
 
+## Draculite CSS Framework
+
+**Draculite** is a classless CSS framework extracted from ProjectSite's template.
+Drop it into any HTML page for instant Dracula-themed styling.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yuzu-octopus/ProjectSite@main/draculite.css">
+```
+
+Features:
+- **Classless core**: `h1`–`h6`, `p`, `table`, `pre`, `code`, `blockquote`, `form`, `button`, `details` — all styled via element selectors
+- **Utility classes**: `.card`, `.grid`, `.callout`, `.badge`, `.link-card`, `.steps`, `.terms`, `.container`, `.reveal`
+- **Dark/light themes**: auto via `prefers-color-scheme`, manual via `data-theme="light|dark"`
+- **Responsive**: tables stack on mobile, grid goes single-column, link-cards wrap
+- **Print styles**: clean print output with visible URLs
+- **No JS, no dependencies, no build step**
+
 ## Notes
 
 - Add a **`.nojekyll`** file to the output directory (`docs/`) to prevent GitHub
