@@ -256,7 +256,7 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     except Exception:
         font_tagline = ImageFont.load_default()
     try:
-        font_subtitle = ImageFont.truetype(regular_path or "", 24) if regular_path else ImageFont.load_default()
+        font_subtitle = ImageFont.truetype(regular_path or "", 26) if regular_path else ImageFont.load_default()
     except Exception:
         font_subtitle = ImageFont.load_default()
 
@@ -298,6 +298,11 @@ def generate_og_image(project: dict, output_path: Path) -> None:
 
     # Calculate vertical centering for the text block
     subtitle_lines = _wrap_text(draw, subtitle, font_subtitle, max_text_width)
+    if len(subtitle_lines) > 3:
+        subtitle_lines = subtitle_lines[:3]
+        subtitle_lines[-1] = subtitle_lines[-1].rstrip(".") + "..."
+    # Keep text block in safe zone (top 540px, social media overlays cover bottom ~60px)
+    SAFE_TOP = 30
     # Calculate subtitle height from actual text metrics, not hardcoded
     subtitle_h = 0
     for line in subtitle_lines:
@@ -311,7 +316,7 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     gap3 = 20  # gap between subtitle and accent
 
     total_text_h = name_h + gap1 + tagline_h + gap2 + subtitle_h + gap3 + accent_h
-    text_y_start = (630 - total_text_h) // 2
+    text_y_start = (630 - total_text_h) // 2 - SAFE_TOP
 
     y = text_y_start
     draw.text((text_x, y), name_display, fill=PURPLE, font=font_name)
