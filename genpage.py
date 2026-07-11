@@ -9,14 +9,6 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-# Dracula dark theme palette for OG image generation
-_DRACULA = {
-    "--bg": "#282a36", "--panel": "#44475a", "--fg": "#f8f8f2",
-    "--muted": "#6272a4", "--purple": "#bd93f9", "--pink": "#ff79c6",
-    "--cyan": "#8be9fd", "--green": "#50fa7b", "--orange": "#ffb86c",
-    "--red": "#ff5555", "--yellow": "#f1fa8c",
-}
-
 HERE = Path(__file__).parent
 TEMPLATE = "template.html.j2"
 
@@ -152,19 +144,12 @@ def render(template_name: str, data: dict) -> str:
     return template.render(**data)
 
 
-def _resolve_svg_vars(svg: str) -> str:
-    """Replace var(--*) references in SVG with Dracula dark theme colors."""
-    for var_name, color in _DRACULA.items():
-        svg = svg.replace(f"var({var_name})", color)
-    return svg
-
-
 def _extract_logo_inner(logo_svg: str) -> tuple[str, str]:
-    """Resolve colors and extract inner content + viewBox from a logo SVG.
+    """Extract inner content + viewBox from a logo SVG.
 
     Returns (inner_svg_content, viewBox_string).
     """
-    resolved = _resolve_svg_vars(logo_svg)
+    resolved = logo_svg
     resolved = re.sub(r"<\?xml[^>]*\?>", "", resolved).strip()
     vb_match = re.search(r'viewBox="([^"]*)"', resolved)
     viewBox = vb_match.group(1) if vb_match else "0 0 64 64"
@@ -187,8 +172,6 @@ def _find_jetbrains_font(weight: str = "Regular") -> str | None:
     patterns = [
         f"JetBrainsMono-{weight}.ttf",
         f"JetBrainsMono{weight}.ttf",
-        f"JetBrainsMonoNLNerdFont-{weight}.ttf",
-        f"JetBrainsMono*{weight}*.ttf",
         "JetBrainsMono*.ttf",
     ]
     for base in search_dirs:
