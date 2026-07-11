@@ -2,6 +2,7 @@
 """Generate project page HTML from TOML data + Jinja2 template."""
 
 import argparse
+import math
 import re
 import tomllib
 from datetime import UTC, datetime
@@ -263,7 +264,7 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     except (OSError, UnicodeDecodeError):
         font_tagline = ImageFont.load_default()
     try:
-        font_subtitle = ImageFont.truetype(regular_path or "", 26) if regular_path else ImageFont.load_default()
+        font_subtitle = ImageFont.truetype(regular_path or "", 22) if regular_path else ImageFont.load_default()
     except (OSError, UnicodeDecodeError):
         font_subtitle = ImageFont.load_default()
 
@@ -292,14 +293,17 @@ def generate_og_image(project: dict, output_path: Path) -> None:
         for var_name in sorted(_SVG_COLORS, key=len, reverse=True):
             logo_svg_resolved = logo_svg_resolved.replace(f"var({var_name})", _SVG_COLORS[var_name])
 
-        # Render logo from SVG via cairosvg → paste as RGBA, preserving aspect ratio
+        # Render logo from SVG via cairosvg at correct resolution
         try:
             logo_inner, viewBox = _extract_logo_inner(logo_svg_resolved)
             logo_svg_full = (
                 f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewBox}">'
                 f"{logo_inner}</svg>"
             )
-            logo_png = cairosvg.svg2png(bytestring=logo_svg_full.encode("utf-8"))
+            # Compute scale from viewBox so logo fills at least logo_size
+            vb_parts = list(map(float, viewBox.split()))
+            scale = math.ceil(logo_size / max(vb_parts[2] if len(vb_parts) > 2 else 64, 1))
+            logo_png = cairosvg.svg2png(bytestring=logo_svg_full.encode("utf-8"), scale=scale)
             if logo_png:
                 logo_img = Image.open(BytesIO(logo_png)).convert("RGBA")
                 # Preserve aspect ratio — fit within logo_size square
