@@ -264,12 +264,23 @@ def generate_og_image(project: dict, output_path: Path) -> None:
     img = Image.new("RGB", (1200, 630), BG)
     draw = ImageDraw.Draw(img)
 
+    # Resolve var(--) references in logo SVG for cairosvg
+    _SVG_COLORS = {
+        "--bg": "#282a36", "--panel": "#44475a", "--fg": "#f8f8f2",
+        "--muted": "#8ca0d7", "--purple": "#bd93f9", "--pink": "#ff79c6",
+        "--cyan": "#8be9fd", "--green": "#50fa7b", "--orange": "#ffb86c",
+        "--red": "#ff5555", "--yellow": "#f1fa8c",
+    }
+    logo_svg_resolved = logo_svg
+    for var_name, color in _SVG_COLORS.items():
+        logo_svg_resolved = logo_svg_resolved.replace(f"var({var_name})", color)
+
     # Render logo from SVG via cairosvg → paste as RGBA
     logo_size = 200
     logo_x = 80
     logo_y = (630 - logo_size) // 2
     try:
-        logo_inner, viewBox = _extract_logo_inner(logo_svg)
+        logo_inner, viewBox = _extract_logo_inner(logo_svg_resolved)
         logo_svg_full = (
             f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewBox}">'
             f"{logo_inner}</svg>"
